@@ -30,7 +30,7 @@ class FreeplayState extends MusicBeatState
 			// songText.screenCenter(X);
 		}
 
-		FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
+		FlxG.sound.playMusic('assets/music/freakyMenu' + TitleState.soundExt, 0, false);
 		FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
 

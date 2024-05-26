@@ -494,6 +494,12 @@ class PlayState extends MusicBeatState
 
 		// trace("SONG POS: " + Conductor.songPosition);
 		// FlxG.sound.music.pitch = 2;
+		if (FlxG.keys.justPressed.ESCAPE)
+			{
+				
+	
+				FlxG.switchState(new FreeplayState());
+			}
 
 		if (FlxG.keys.justPressed.ENTER)
 		{
@@ -635,9 +641,9 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			//openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
 
 		if (unspawnNotes[0] != null)
@@ -840,6 +846,7 @@ class PlayState extends MusicBeatState
 		var left = controls.LEFT;
 
 		var upP = controls.UP_P;
+		
 		var rightP = controls.RIGHT_P;
 		var downP = controls.DOWN_P;
 		var leftP = controls.LEFT_P;
