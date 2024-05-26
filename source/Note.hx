@@ -15,15 +15,26 @@ class Note extends FlxSprite
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
 
+	public var sustainLength:Float = 0;
+	public var isSustainNote:Bool = false;
+
 	public var noteScore:Float = 1;
 
 	public static var swagWidth:Float = 160 * 0.7;
+	public static var PURP_NOTE:Int = 0;
+	public static var GREEN_NOTE:Int = 2;
+	public static var BLUE_NOTE:Int = 1;
+	public static var RED_NOTE:Int = 3;
 
-	public function new(strumTime:Float, noteData:Int, prevNote:Note)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
 
+		if (prevNote == null)
+			prevNote = this;
+
 		this.prevNote = prevNote;
+		isSustainNote = sustainNote;
 
 		x += 50;
 		this.strumTime = strumTime;
@@ -51,25 +62,25 @@ class Note extends FlxSprite
 		updateHitbox();
 		antialiasing = true;
 
-		switch (Math.abs(noteData))
+		switch (noteData)
 		{
-			case 1:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 2:
-				x += swagWidth * 3;
-				animation.play('redScroll');
-			case 3:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 4:
+			case 0:
 				x += swagWidth * 0;
 				animation.play('purpleScroll');
+			case 1:
+				x += swagWidth * 1;
+				animation.play('blueScroll');
+			case 2:
+				x += swagWidth * 2;
+				animation.play('greenScroll');
+			case 3:
+				x += swagWidth * 3;
+				animation.play('redScroll');
 		}
 
-		trace(prevNote);
+		// trace(prevNote);
 
-		if (noteData < 0 && prevNote != null)
+		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
 			alpha = 0.6;
@@ -78,13 +89,13 @@ class Note extends FlxSprite
 
 			switch (noteData)
 			{
-				case -1:
+				case 2:
 					animation.play('greenholdend');
-				case -2:
+				case 3:
 					animation.play('redholdend');
-				case -3:
+				case 1:
 					animation.play('blueholdend');
-				case -4:
+				case 0:
 					animation.play('purpleholdend');
 			}
 
@@ -92,22 +103,22 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (prevNote.noteData < 0)
+			if (prevNote.isSustainNote)
 			{
 				switch (prevNote.noteData)
 				{
-					case -1:
+					case 2:
 						prevNote.animation.play('greenhold');
-					case -2:
+					case 3:
 						prevNote.animation.play('redhold');
-					case -3:
+					case 1:
 						prevNote.animation.play('bluehold');
-					case -4:
+					case 0:
 						prevNote.animation.play('purplehold');
 				}
 
 				prevNote.offset.y = -19;
-				prevNote.scale.y *= 2.25;
+				prevNote.scale.y *= (2.25 * PlayState.SONG.speed);
 				// prevNote.setGraphicSize();
 			}
 		}
@@ -119,8 +130,9 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
+			// The * 0.5 us so that its easier to hit them too late, instead of too early
 			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-				&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset)
+				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
 			{
 				canBeHit = true;
 			}

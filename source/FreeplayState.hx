@@ -4,13 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.text.FlxText;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
 
-
-class FreeplayState extends FlxTransitionableState
+class FreeplayState extends MusicBeatState
 {
 	var songs:Array<String> = ["Bopeebo", "Dadbattle", "Fresh", "Tutorial", "Spookeez", "South", "Monster"];
 
@@ -35,7 +30,7 @@ class FreeplayState extends FlxTransitionableState
 			// songText.screenCenter(X);
 		}
 
-		//FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
+		FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
 		FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
 
@@ -51,13 +46,9 @@ class FreeplayState extends FlxTransitionableState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
-		
-
-		var upP = FlxG.keys.anyJustPressed([W, UP]);
-		
-		var downP = FlxG.keys.anyJustPressed([S, DOWN]);
-		var accepted = FlxG.keys.anyJustPressed([ENTER, SPACE]);
+		var upP = controls.UP_P;
+		var downP = controls.DOWN_P;
+		var accepted = controls.ACCEPT;
 
 		if (upP)
 		{
@@ -77,11 +68,9 @@ class FreeplayState extends FlxTransitionableState
 
 		if (accepted)
 		{
-			//PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase());
+			PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase());
 			FlxG.switchState(new PlayState());
 			FlxG.sound.music.stop();
 		}
-
-		
 	}
 }
