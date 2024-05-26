@@ -7,6 +7,12 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 class GameOverSubstate extends MusicBeatSubstate
 {
 	var bf:Boyfriend;
@@ -14,25 +20,29 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
+
 		super();
-
-		Conductor.songPosition = 0;
-
-		bf = new Boyfriend(x, y);
-		add(bf);
-
-		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
-		add(camFollow);
-
+		var loser:FlxSprite = new FlxSprite(100, 100);
+		var loseTex = FlxAtlasFrames.fromSparrow(AssetPaths.lose__png, AssetPaths.lose__xml);
+		loser.frames = loseTex;
+		loser.animation.addByPrefix('lose', 'lose', 24, false);
+		loser.animation.play('lose');
+		add(loser);
 		FlxG.sound.play('assets/sounds/fnf_loss_sfx' + TitleState.soundExt);
 		Conductor.changeBPM(100);
+		var restart:FlxSprite = new FlxSprite(500, 50).loadGraphic(AssetPaths.restart__png);
+		restart.setGraphicSize(Std.int(restart.width * 0.6));
+		restart.updateHitbox();
+		restart.alpha = 0;
+		restart.antialiasing = true;
+		add(restart);
+	 FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2 + 10, FlxG.height / 2));
+		FlxG.sound.music.fadeOut(2, FlxG.sound.music.volume * 0.6);
 
-		// FlxG.camera.followLerp = 1;
-		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
-		FlxG.camera.scroll.set();
-		FlxG.camera.target = null;
+		FlxTween.tween(restart, {alpha: 1}, 1, {ease: FlxEase.quartInOut});
+		FlxTween.tween(restart, {y: restart.y + 40}, 7, {ease: FlxEase.quartInOut, type: PINGPONG});
 
-		bf.playAnim('firstDeath');
+		super.create();
 	}
 
 	override function update(elapsed:Float)
@@ -44,15 +54,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			endBullshit();
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
-		{
-			FlxG.camera.follow(camFollow, LOCKON, 0.01);
-		}
-
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-		{
-			FlxG.sound.playMusic('assets/music/gameOver' + TitleState.soundExt);
-		}
+		
 
 		if (FlxG.sound.music.playing)
 		{
@@ -74,7 +76,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (!isEnding)
 		{
 			isEnding = true;
-			bf.playAnim('deathConfirm', true);
+			
 			FlxG.sound.music.stop();
 			FlxG.sound.play('assets/music/gameOverEnd' + TitleState.soundExt);
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)

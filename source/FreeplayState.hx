@@ -46,9 +46,9 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
+		var upP = FlxG.keys.anyJustPressed([UP, W]);
+		var downP = FlxG.keys.anyJustPressed([DOWN, S]);
+		var accepted = FlxG.keys.anyJustPressed([SPACE, ENTER]);
 
 		if (upP)
 		{

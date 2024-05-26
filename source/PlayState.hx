@@ -504,7 +504,7 @@ class PlayState extends MusicBeatState
 			openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
 
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
 		}
