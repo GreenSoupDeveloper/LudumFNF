@@ -1,0 +1,1 @@
+start export/release/flash/bin/Funkin.swf

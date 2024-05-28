@@ -24,6 +24,9 @@ class PauseSubState extends FlxSubState
 		bf.playAnim('firstDeath');
 
 		bg.cameras = [FlxG.cameras.list[1]];
+		var text = new flixel.text.FlxText(0, 0, 0, "Pause", 128);
+	text.screenCenter();
+	add(text);
 	}
 
 	override function update(elapsed:Float)
