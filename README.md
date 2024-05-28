@@ -1,5 +1,5 @@
-# Friday Night Funkin
+# Ludum  Friday Night Funkin
 
-This is the repository for Friday Night Funkin, a game originally made for Ludum Dare 47 "Stuck In a Loop".
+This is the repository for Ludum Friday Night Funkin, a fork of the Ludum Dare 47 FNF Prototype that makes it better because why not.
 
-Play the Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
+Play the FNF Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin

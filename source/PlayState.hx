@@ -622,7 +622,7 @@ class PlayState extends MusicBeatState
 
 			vocals.stop();
 			FlxG.sound.music.stop();
-			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
+			FlxG.sound.play('assets/sounds/bfDie'+ TitleState.soundExt, 0.7);
 			FlxG.switchState(new GameOverState());
 		}
 		if (startingSong)
@@ -736,7 +736,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		
-			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
+			FlxG.sound.play('assets/sounds/bfDie'+ TitleState.soundExt, 0.7);
 			 FlxG.switchState(new GameOverState());
 		}
 
