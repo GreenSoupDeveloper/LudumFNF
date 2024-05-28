@@ -10,7 +10,7 @@ class MenuItem extends FlxSpriteGroup
 	public var targetY:Float = 0;
 	public var week:FlxSprite;
 
-	public function new(x:Float, y:Float, weekNum:Int = 0, unlocked:Bool = false)
+	public function new(x:Float, y:Float, weekNum:Int = 0, unlocked:Bool = true)
 	{
 		super(x, y);
 
@@ -18,8 +18,9 @@ class MenuItem extends FlxSpriteGroup
 
 		week = new FlxSprite();
 		week.frames = tex;
-		week.animation.addByPrefix('week0', "WEEK1 select", 24);
-		week.animation.addByPrefix('week1', "week2 select", 24);
+		week.animation.addByPrefix('week0', "tutorial selected", 24);
+		week.animation.addByPrefix('week1', "WEEK1 select", 24);
+		week.animation.addByPrefix('week2', "week2 select", 24);
 		add(week);
 
 		week.animation.play('week' + weekNum);

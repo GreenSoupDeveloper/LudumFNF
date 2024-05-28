@@ -21,6 +21,7 @@ class MenuCharacter extends FlxSprite
 		animation.addByPrefix('gf', "GF Dancing Beat WHITE", 24);
 		animation.addByPrefix('dad', "Dad idle dance BLACK LINE", 24);
 		animation.addByPrefix('spooky', "spooky dance idle BLACK LINES", 24);
+		animation.addByPrefix('none', "noney", 24);
 
 		animation.play(character);
 		updateHitbox();

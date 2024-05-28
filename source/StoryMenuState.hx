@@ -9,6 +9,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
+import flixel.util.FlxColor;
 
 using StringTools;
 
@@ -16,16 +17,30 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [['Tutorial', 'Bopeebo', 'Fresh', 'Dadbattle'], ['Spookeez', 'South']];
+	var weekData:Array<Dynamic> = [
+	['Tutorial'], 
+	['Bopeebo', 'Fresh', 'Dadbattle'], 
+	['Spookeez', 'South', 'monster']];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true];
 
-	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['spooky', 'bf', 'gf']];
+	var weekCharacters:Array<Dynamic> = [
+		['dad', 'bf', 'gf'], 
+		['dad', 'bf', 'gf'], 
+		['spooky', 'bf', 'gf']];
 	var curWeek:Int = 0;
+
+	var weekNames:Array<String> = [
+		"",
+		"Daddy Dearest",
+		"Spooky Month"
+	
+	];
 
 	var txtTracklist:FlxText;
 
+	var txtWeekTitle:FlxText;
 	var grpWeekText:FlxTypedGroup<MenuItem>;
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
@@ -42,6 +57,10 @@ class StoryMenuState extends MusicBeatState
 
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
+		
+		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
+		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
+		txtWeekTitle.alpha = 0.7;
 
 		var rankText:FlxText = new FlxText(0, 10);
 		rankText.text = 'RANK: GREAT';
@@ -64,8 +83,8 @@ class StoryMenuState extends MusicBeatState
 		{
 			var unlocked:Bool = true;
 
-			if (i == 1)
-				unlocked = false;
+			/*if (i == 1)
+				unlocked = false;*/
 
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i, unlocked);
 			weekThing.y += ((weekThing.height + 20) * i);
@@ -76,7 +95,7 @@ class StoryMenuState extends MusicBeatState
 			weekThing.antialiasing = true;
 			// weekThing.updateHitbox();
 
-			if (!weekUnlocked[i])
+		/*	if (!weekUnlocked[i])
 			{
 				var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
 				lock.frames = ui_tex;
@@ -85,7 +104,7 @@ class StoryMenuState extends MusicBeatState
 				lock.ID = i;
 				lock.antialiasing = true;
 				grpLocks.add(lock);
-			}
+			}*/
 		}
 
 		for (char in 0...3)
@@ -95,6 +114,9 @@ class StoryMenuState extends MusicBeatState
 			weekCharacterThing.antialiasing = true;
 			switch (weekCharacterThing.character)
 			{
+				case 'none':
+					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+					weekCharacterThing.updateHitbox();
 				case 'dad':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
@@ -105,6 +127,10 @@ class StoryMenuState extends MusicBeatState
 				case 'gf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
+				case 'spooky':
+					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
+					weekCharacterThing.updateHitbox();
+					
 			}
 
 			grpWeekCharacters.add(weekCharacterThing);
@@ -147,7 +173,7 @@ class StoryMenuState extends MusicBeatState
 		add(txtTracklist);
 		add(rankText);
 		add(scoreText);
-
+add(txtWeekTitle);
 		updateText();
 
 		super.create();
@@ -160,7 +186,8 @@ class StoryMenuState extends MusicBeatState
 		// FlxG.watch.addQuick('font', scoreText.font);
 
 		difficultySelectors.visible = weekUnlocked[curWeek];
-
+		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
+		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 		grpLocks.forEach(function(lock:FlxSprite)
 		{
 			lock.y = grpWeekText.members[lock.ID].y;
