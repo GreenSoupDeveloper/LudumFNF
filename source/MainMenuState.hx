@@ -22,6 +22,8 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		if (!FlxG.sound.music.playing)
+			FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt);
 		persistentUpdate = persistentDraw = true;
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(AssetPaths.menuBG__png);

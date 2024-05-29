@@ -9,19 +9,32 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
+import flixel.text.FlxText;
 
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var menuItems:Array<String>;
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
+	var difficHere = "";
+
 
 	public function new(x:Float, y:Float)
 	{
 		super();
+		switch (PlayState.storyDifficulty)
+		{
+			case 0:
+				difficHere = 'EASY';
+				case 1:
+				difficHere = 'NORMAL';
+			case 2:
+				difficHere = 'HARD';
+		}
+		menuItems = ['Resume', 'Restart Song', 'Exit to menu'];
 
 		pauseMusic = new FlxSound().loadEmbedded('assets/music/breakfast' + TitleState.soundExt, true, true);
 		pauseMusic.volume = 0;
@@ -48,6 +61,33 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		
+
+
+
+
+
+		
+
+		var defficTexty:FlxText = new FlxText(10, 15 + 32, FlxG.width - 60, 'Difficulty: ');
+		// scoreText.autoSize = false;
+		defficTexty.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, RIGHT);
+		//scoreText.screenCenter(X);
+		defficTexty.scrollFactor.set();
+		defficTexty.text += difficHere;
+		  add(defficTexty);
+		  
+		var songnameTexty:FlxText = new FlxText(30, 15 + 72, FlxG.width - 100, 'Difficulty: ');
+		// scoreText.autoSize = false;
+		songnameTexty.setFormat("assets/fonts/vcr.ttf", 32, FlxColor.WHITE, RIGHT);
+		//scoreText.screenCenter(X);
+		songnameTexty.scrollFactor.set();
+		songnameTexty.text = PlayState.SONG.song;
+		  add(songnameTexty);
+		
+	
+	
 	}
 
 	override function update(elapsed:Float)
@@ -56,17 +96,21 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
+	
 
+		
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
 
 		if (upP)
 		{
+			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(-1);
 		}
 		if (downP)
 		{
+			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(1);
 		}
 
@@ -81,7 +125,11 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					FlxG.resetState();
 				case "Exit to menu":
-					FlxG.switchState(new MainMenuState());
+					FlxG.sound.music.stop();
+					if (PlayState.isStoryMode)
+						FlxG.switchState(new StoryMenuState());
+					else
+						FlxG.switchState(new FreeplayState());
 			}
 		}
 

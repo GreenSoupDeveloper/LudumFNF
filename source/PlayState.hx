@@ -612,7 +612,11 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SEVEN)
 			FlxG.switchState(new ChartingState());
 		if (FlxG.keys.justPressed.ESCAPE)
-			FlxG.switchState(new MainMenuState());
+			
+			if (PlayState.isStoryMode)
+				FlxG.switchState(new StoryMenuState());
+			else
+				FlxG.switchState(new FreeplayState());
 		if (FlxG.keys.justPressed.R){
 			boyfriend.stunned = true;
 
@@ -826,7 +830,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.switchState(new MainMenuState());
 
-				StoryMenuState.weekUnlocked[1] = true;
+				
 			}
 			else
 			{

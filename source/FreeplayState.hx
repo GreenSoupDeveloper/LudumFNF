@@ -24,6 +24,7 @@ class FreeplayState extends MusicBeatState
 	var diffText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
+	var difficFreeplay:String = "";
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -133,6 +134,15 @@ class FreeplayState extends MusicBeatState
 			lerpScore = intendedScore;
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		switch (curDifficulty)
+			{
+				case 0:
+					difficFreeplay = '-easy';
+					case 1:
+						difficFreeplay = '';
+				case 2:
+					difficFreeplay = '-hard';
+			}
 
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
@@ -154,7 +164,10 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new MainMenuState());
+			
+			FlxG.sound.music.stop();
+				FlxG.switchState(new MainMenuState());
+			
 		}
 
 		if (accepted)
@@ -163,7 +176,7 @@ class FreeplayState extends MusicBeatState
 
 		
 
-			PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase(), songs[curSelected].toLowerCase());
+			PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase() + difficFreeplay, songs[curSelected].toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			FlxG.switchState(new PlayState());
@@ -175,7 +188,13 @@ class FreeplayState extends MusicBeatState
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
-
+		switch (curDifficulty)
+		{
+			case 0:
+				difficFreeplay = '-easy';
+			case 2:
+				difficFreeplay = '-hard';
+		}
 		if (curDifficulty < 0)
 			curDifficulty = 2;
 		if (curDifficulty > 2)
