@@ -34,12 +34,15 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
+	//TODO: do score shit for the "sick", "bad" and etc scores, and do a total notes on a song thing because why not
+	//oh and fix the note miss shit cuz for some reason instead of losing score you gain like 800 points so yea
 	public static var curLevel:String = 'Tutorial';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 	public static var finalScore:Int = 0;
+	public static var noteScores:Array<Int> = [];
 
 	var halloweenLevel:Bool = false;
 
@@ -81,6 +84,8 @@ class PlayState extends MusicBeatState
 	var halloweenBG:FlxSprite;
 
 	var talking:Bool = true;
+
+	public var daRating:String = "sick";
 
 	override public function create()
 	{
@@ -363,7 +368,7 @@ class PlayState extends MusicBeatState
 		lastReportedPlayheadPosition = 0;
 
 		startingSong = false;
-		FlxG.sound.playMusic("assets/music/" + SONG.song + "_Inst" + TitleState.soundExt, 1, false);
+		FlxG.sound.playMusic("assets/songs/" + SONG.song.toLowerCase() + "/Inst" + TitleState.soundExt, 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
 	}
@@ -380,7 +385,7 @@ class PlayState extends MusicBeatState
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded("assets/music/" + curSong + "_Voices" + TitleState.soundExt);
+			vocals = new FlxSound().loadEmbedded("assets/songs/" + SONG.song.toLowerCase() + "/Voices" + TitleState.soundExt);
 		else
 			vocals = new FlxSound();
 
@@ -612,9 +617,12 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 			FlxG.switchState(new ChartingState());
-		if (FlxG.keys.justPressed.SIX){
+		if (FlxG.keys.justPressed.FIVE){
 			//finalScore = combo;
 			FlxG.switchState(new SuccessState());}
+			if (FlxG.keys.justPressed.SIX){
+				finalScore = 1111;
+				FlxG.switchState(new SuccessState());}
 		if (FlxG.keys.justPressed.ESCAPE)
 			
 			if (PlayState.isStoryMode)
@@ -875,19 +883,24 @@ class PlayState extends MusicBeatState
 
 		var rating:FlxSprite = new FlxSprite();
 
-		var daRating:String = "sick";
+		
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
 			daRating = 'shit';
+		
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
-			daRating = 'bad';
+			daRating = 'bad'; 
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
-			daRating = 'good';
+			daRating = 'good'; 
+			
+		}else{
+			daRating = "sick";
+			
 		}
 
 		/* if (combo > 60)
@@ -1124,6 +1137,7 @@ class PlayState extends MusicBeatState
 				gf.playAnim('sad');
 			}
 			combo = 0;
+			finalScore -= 25;
 
 			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
@@ -1211,7 +1225,26 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime);
 				combo += 1;
-				finalScore += 10;
+				if (daRating == "shit")
+					{
+						
+						finalScore += 20;
+					}
+					else if (daRating == "bad")
+					{
+						finalScore += 40;
+					}
+					else if (daRating == "good")
+					{
+						
+						finalScore += 70;
+					}else if(daRating == "sick"){
+						finalScore += 100;
+					}else{
+						finalScore += 100;
+					}
+			
+				
 			}
 
 			if (note.noteData >= 0)

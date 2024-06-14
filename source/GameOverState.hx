@@ -73,7 +73,7 @@ class GameOverState extends FlxTransitionableState
 				FlxG.sound.music.stop();
 				FlxG.camera.follow(restart, LOCKON, 0.09);
 				FlxTween.tween(loser, {alpha: -1}, 1, {ease: FlxEase.quartInOut});
-				FlxG.sound.play('assets/music/gameOverEnd' + TitleState.soundExt);
+				FlxG.sound.play('assets/music/gameOver/gameOverEnd' + TitleState.soundExt);
 				new FlxTimer().start(0.8, function(tmr:FlxTimer)
 				{
 					FlxG.camera.fade(FlxColor.BLACK, 2, false, function()

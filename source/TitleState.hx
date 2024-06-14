@@ -79,7 +79,7 @@ class TitleState extends MusicBeatState
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
-			FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
+			FlxG.sound.playMusic('assets/music/title/freakyMenu' + TitleState.soundExt, 0);
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 		}
@@ -156,7 +156,7 @@ class TitleState extends MusicBeatState
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 			FlxG.camera.flash(FlxColor.WHITE, 1);
-			FlxG.sound.play('assets/music/titleShoot' + TitleState.soundExt, 0.7);
+			FlxG.sound.play('assets/sounds/confirmMenu' + TitleState.soundExt, 0.7);
 
 			transitioning = true;
 			// FlxG.sound.music.stop();

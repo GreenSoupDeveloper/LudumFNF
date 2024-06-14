@@ -27,6 +27,7 @@ class SuccessState extends MusicBeatState
 	var results:FlxSprite;
 	var scoreSprite:FlxSprite;
 	private var boyfriend:Boyfriend;
+	var bfGood:FlxSprite;
 	override function create()
 		{
 			FlxG.sound.playMusic('assets/music/successScreen/normal/resultsNORMAL' + TitleState.soundExt);
@@ -53,12 +54,28 @@ class SuccessState extends MusicBeatState
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				FlxTween.tween(results, { y: results.y, x: results.x + 300 }, 2, {ease: FlxEase.quartInOut, type: ONESHOT});
-				FlxTween.tween(boyfriend, { y: boyfriend.y, x: boyfriend.x + 600 }, 3, {ease: FlxEase.quartInOut, type: ONESHOT});
+				if(PlayState.finalScore > 3000){
+					//notin
+				}else{
+					FlxTween.tween(boyfriend, { y: boyfriend.y, x: boyfriend.x + 600 }, 3, {ease: FlxEase.quartInOut, type: ONESHOT});
+				}
 				
 				new FlxTimer().start(2.5, function(tmr:FlxTimer)
 					{
+						if(PlayState.finalScore > 3000){
 						
-						boyfriend.playAnim('hey');
+						bfGood = new FlxSprite(30, -60);
+						var bfGoodaa = FlxAtlasFrames.fromSparrow(AssetPaths.resultBoyfriendGOOD__png, AssetPaths.resultBoyfriendGOOD__xml);
+			            bfGood.frames = bfGoodaa;
+			            bfGood.animation.addByPrefix('bf', 'Boyfriend Good Anim', 24, false);
+			            bfGood.animation.play('bf');
+			            bfGood.antialiasing = true;
+						bfGood.setGraphicSize(Std.int(bfGood.width / 1.7));
+			            add(bfGood);
+						}else{
+							boyfriend.playAnim('hey');
+						}
+
 						scoreSprite = new FlxSprite(695, 400);
 			            var scoreSpriteTex = FlxAtlasFrames.fromSparrow(AssetPaths.scorePopin__png, AssetPaths.scorePopin__xml);
 			            scoreSprite.frames = scoreSpriteTex;
