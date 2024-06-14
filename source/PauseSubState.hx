@@ -20,11 +20,13 @@ class PauseSubState extends MusicBeatSubstate
 
 	var pauseMusic:FlxSound;
 	var difficHere = "";
+	public static var currentREALDifficulty:Int = 0; //wip
 
 
 	public function new(x:Float, y:Float)
 	{
 		super();
+		
 		switch (PlayState.storyDifficulty)
 		{
 			case 0:
@@ -123,8 +125,10 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
+					PlayState.finalScore = 0;
 					FlxG.resetState();
 				case "Exit to menu":
+					PlayState.finalScore = 0;
 					FlxG.sound.music.stop();
 					if (PlayState.isStoryMode)
 						FlxG.switchState(new StoryMenuState());

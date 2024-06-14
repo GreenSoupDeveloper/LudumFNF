@@ -52,7 +52,10 @@ class TitleState extends MusicBeatState
 		// DEBUG BULLSHIT
 
 		super.create();
+		FlxG.save.bind('ludumfnf', 'greensoupdev');
+		Highscore.load();
 
+		trace('SAVE FILE LOADED LOL');
 		#if SKIP_TO_PLAYSTATE
 		FlxG.switchState(new StoryMenuState());
 		#else

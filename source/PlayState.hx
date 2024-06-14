@@ -30,6 +30,7 @@ import flixel.util.FlxTimer;
 import haxe.Json;
 import lime.utils.Assets;
 
+
 using StringTools;
 
 class PlayState extends MusicBeatState
@@ -41,6 +42,7 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var storyWeek:Int = 0;
 	public static var finalScore:Int = 0;
 	public static var noteScores:Array<Int> = [];
 
@@ -87,6 +89,8 @@ class PlayState extends MusicBeatState
 
 	public var daRating:String = "sick";
 
+	public var currentScoreNextValue:Int = 100;
+	
 	override public function create()
 	{
 		// var gameCam:FlxCamera = FlxG.camera;
@@ -106,7 +110,13 @@ class PlayState extends MusicBeatState
 			SONG = Song.loadFromJson(curLevel);
 
 		Conductor.changeBPM(SONG.bpm);
+		if (isStoryMode)
+			{	
+				//storyDifficulty = FlxG.save.data.currentDifficulty;
+				storyDifficulty = StoryMenuState.curDifficulty;
 
+				trace(storyDifficulty + " diff");
+			}
 		switch (SONG.song.toLowerCase())
 		{
 			case 'tutorial':
@@ -588,7 +598,7 @@ class PlayState extends MusicBeatState
 		// trace("SONG POS: " + Conductor.songPosition);
 		// FlxG.sound.music.pitch = 2;
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown)
+		if (FlxG.keys.justPressed.ENTER && startedCountdown || FlxG.keys.justPressed.ESCAPE && startedCountdown)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -620,15 +630,15 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.FIVE){
 			//finalScore = combo;
 			FlxG.switchState(new SuccessState());}
+
+			if (FlxG.keys.justPressed.ONE){
+				endSong();
+			}
+
 			if (FlxG.keys.justPressed.SIX){
 				finalScore = 1111;
 				FlxG.switchState(new SuccessState());}
-		if (FlxG.keys.justPressed.ESCAPE)
-			
-			if (PlayState.isStoryMode)
-				FlxG.switchState(new StoryMenuState());
-			else
-				FlxG.switchState(new FreeplayState());
+	
 		if (FlxG.keys.justPressed.R){
 			boyfriend.stunned = true;
 
@@ -832,14 +842,23 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+	
 		trace('SONG DONE' + isStoryMode);
-
+	
+				#if !switch
+			
+				#end
+			
 		if (isStoryMode)
-		{
+		{	
 			storyPlaylist.remove(storyPlaylist[0]);
 
 			if (storyPlaylist.length <= 0)
 			{
+				
+						//NGio.unlockMedal(60961);
+						Highscore.saveWeekScore(storyWeek, finalScore, storyDifficulty);
+
 				//finalScore = combo;
 				FlxG.switchState(new SuccessState());
 
@@ -848,20 +867,25 @@ class PlayState extends MusicBeatState
 			else
 			{
 				var difficulty:String = "";
+				storyDifficulty = StoryMenuState.curDifficulty;
+
 
 				if (storyDifficulty == 0)
 					difficulty = '-easy';
-
 				if (storyDifficulty == 2)
-					difficulty == '-hard';
+					difficulty = '-hard';
+				
+				
 
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0].toLowerCase());
 				FlxG.switchState(new PlayState());
+				
 			}
 		}
 		else
 		{
-			//finalScore = combo;
+			//finalScore = combo;	
+			Highscore.saveScore(SONG.song, finalScore, storyDifficulty);
 			FlxG.switchState(new SuccessState());
 		}
 	}
@@ -888,18 +912,22 @@ class PlayState extends MusicBeatState
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
 			daRating = 'shit';
+			currentScoreNextValue = 10;
 		
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad'; 
+			currentScoreNextValue = 40;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good'; 
+			currentScoreNextValue = 70;
 			
 		}else{
 			daRating = "sick";
+			currentScoreNextValue = 100;
 			
 		}
 
@@ -1137,7 +1165,7 @@ class PlayState extends MusicBeatState
 				gf.playAnim('sad');
 			}
 			combo = 0;
-			finalScore -= 25;
+			finalScore -= 10;
 
 			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
@@ -1225,7 +1253,8 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime);
 				combo += 1;
-				if (daRating == "shit")
+				finalScore += currentScoreNextValue;
+				/*if (daRating == "shit")
 					{
 						
 						finalScore += 20;
@@ -1242,7 +1271,7 @@ class PlayState extends MusicBeatState
 						finalScore += 100;
 					}else{
 						finalScore += 100;
-					}
+					}*/
 			
 				
 			}

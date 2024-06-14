@@ -19,6 +19,7 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
+	
 }
 
 class Song
@@ -34,6 +35,7 @@ class Song
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 
+	
 	public function new(song, notes, bpm, sections)
 	{
 		this.song = song;

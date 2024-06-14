@@ -51,6 +51,7 @@ class GameOverState extends FlxTransitionableState
 		
 				if (FlxG.keys.justPressed.ESCAPE)
 				{
+					PlayState.finalScore = 0;
 					FlxG.sound.music.stop();
 		
 					if (PlayState.isStoryMode)
@@ -68,6 +69,7 @@ class GameOverState extends FlxTransitionableState
 	{
 		if (!isEnding)
 			{
+
 				isEnding = true;
 			
 				FlxG.sound.music.stop();
@@ -78,6 +80,7 @@ class GameOverState extends FlxTransitionableState
 				{
 					FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 					{
+						PlayState.finalScore = 0;
 						FlxG.switchState(new PlayState());
 					});
 				});

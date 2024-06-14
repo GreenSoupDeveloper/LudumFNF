@@ -28,6 +28,7 @@ class SuccessState extends MusicBeatState
 	var scoreSprite:FlxSprite;
 	private var boyfriend:Boyfriend;
 	var bfGood:FlxSprite;
+	var finishedAnim:Bool = false;
 	override function create()
 		{
 			FlxG.sound.playMusic('assets/music/successScreen/normal/resultsNORMAL' + TitleState.soundExt);
@@ -87,7 +88,7 @@ class SuccessState extends MusicBeatState
 						scoretext.setFormat("VCR OSD Mono", 64, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		                //scoretext.screenCenter();
 		                add(scoretext);
-
+						finishedAnim = true;
 						
 					});
 			});
@@ -97,18 +98,18 @@ class SuccessState extends MusicBeatState
 		{
 			if (FlxG.keys.justPressed.ENTER)
 				{
+					if(finishedAnim == true){
+					PlayState.finalScore = 0;
 					FlxG.sound.music.stop();
 		
 					if (PlayState.isStoryMode)
 						FlxG.switchState(new StoryMenuState());
 					else
 						FlxG.switchState(new FreeplayState());
+				    }
 				}
 		
-				if (FlxG.keys.justPressed.ESCAPE)
-				{
-					
-				}
+				
 			
 			super.update(elapsed);
 		}
