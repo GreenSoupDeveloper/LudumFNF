@@ -39,6 +39,7 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var finalScore:Int = 0;
 
 	var halloweenLevel:Bool = false;
 
@@ -611,6 +612,9 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 			FlxG.switchState(new ChartingState());
+		if (FlxG.keys.justPressed.SIX){
+			//finalScore = combo;
+			FlxG.switchState(new SuccessState());}
 		if (FlxG.keys.justPressed.ESCAPE)
 			
 			if (PlayState.isStoryMode)
@@ -828,7 +832,8 @@ class PlayState extends MusicBeatState
 
 			if (storyPlaylist.length <= 0)
 			{
-				FlxG.switchState(new MainMenuState());
+				//finalScore = combo;
+				FlxG.switchState(new SuccessState());
 
 				
 			}
@@ -848,7 +853,8 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			FlxG.switchState(new FreeplayState());
+			//finalScore = combo;
+			FlxG.switchState(new SuccessState());
 		}
 	}
 
@@ -1205,6 +1211,7 @@ class PlayState extends MusicBeatState
 			{
 				popUpScore(note.strumTime);
 				combo += 1;
+				finalScore += 10;
 			}
 
 			if (note.noteData >= 0)
