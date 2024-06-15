@@ -126,9 +126,19 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					PlayState.finalScore = 0;
+					PlayState.sickNotesNumber = 0;
+					PlayState.goodNotesNumber = 0;
+					PlayState.badNotesNumber = 0;
+					PlayState.shitNotesNumber = 0;
+					PlayState.missedNotesNumber = 0;
 					FlxG.resetState();
 				case "Exit to menu":
 					PlayState.finalScore = 0;
+					PlayState.sickNotesNumber = 0;
+					PlayState.goodNotesNumber = 0;
+					PlayState.badNotesNumber = 0;
+					PlayState.shitNotesNumber = 0;
+					PlayState.missedNotesNumber = 0;
 					FlxG.sound.music.stop();
 					if (PlayState.isStoryMode)
 						FlxG.switchState(new StoryMenuState());

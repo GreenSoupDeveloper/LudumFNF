@@ -23,6 +23,7 @@ class Boyfriend extends Character
 		animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
 		animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
 		animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+		animation.addByPrefix('singLEFTLoss', 'BF NOTE LEFT MISS', 24, false);
 		animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
 		animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 		animation.addByPrefix('hey', 'BF HEY', 24, false);
@@ -47,6 +48,7 @@ class Boyfriend extends Character
 		addOffset('firstDeath', 37, 11);
 		addOffset('deathLoop', 37, 5);
 		addOffset('deathConfirm', 37, 69);
+		addOffset("singLEFTLoss", 12, 24);
 	}
 
 	override function update(elapsed:Float)

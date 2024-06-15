@@ -52,6 +52,11 @@ class GameOverState extends FlxTransitionableState
 				if (FlxG.keys.justPressed.ESCAPE)
 				{
 					PlayState.finalScore = 0;
+					PlayState.sickNotesNumber = 0;
+					PlayState.goodNotesNumber = 0;
+					PlayState.badNotesNumber = 0;
+					PlayState.shitNotesNumber = 0;
+					PlayState.missedNotesNumber = 0;
 					FlxG.sound.music.stop();
 		
 					if (PlayState.isStoryMode)
@@ -81,6 +86,11 @@ class GameOverState extends FlxTransitionableState
 					FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 					{
 						PlayState.finalScore = 0;
+					PlayState.sickNotesNumber = 0;
+					PlayState.goodNotesNumber = 0;
+					PlayState.badNotesNumber = 0;
+					PlayState.shitNotesNumber = 0;
+					PlayState.missedNotesNumber = 0;
 						FlxG.switchState(new PlayState());
 					});
 				});

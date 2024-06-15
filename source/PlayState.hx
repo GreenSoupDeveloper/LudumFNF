@@ -90,6 +90,15 @@ class PlayState extends MusicBeatState
 	public var daRating:String = "sick";
 
 	public var currentScoreNextValue:Int = 100;
+
+	public static var sickNotesNumber:Int = 0;
+	public static var goodNotesNumber:Int = 0;
+	public static var badNotesNumber:Int = 0;
+	public static var shitNotesNumber:Int = 0;
+
+	public static var missedNotesNumber:Int = 0;
+
+
 	
 	override public function create()
 	{
@@ -634,6 +643,22 @@ class PlayState extends MusicBeatState
 			if (FlxG.keys.justPressed.ONE){
 				endSong();
 			}
+			if (FlxG.keys.justPressed.TWO){
+				shitNotesNumber = 1000;
+				endSong();
+			}
+			if (FlxG.keys.justPressed.THREE){
+				badNotesNumber = 1000;
+				endSong();
+			}
+			if (FlxG.keys.justPressed.FOUR){
+				goodNotesNumber = 1000;
+				endSong();
+			}
+			if (FlxG.keys.justPressed.FIVE){
+				sickNotesNumber = 1000;
+				endSong();
+			}
 
 			if (FlxG.keys.justPressed.SIX){
 				finalScore = 1111;
@@ -913,21 +938,25 @@ class PlayState extends MusicBeatState
 		{
 			daRating = 'shit';
 			currentScoreNextValue = 10;
+			shitNotesNumber += 1;
 		
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad'; 
 			currentScoreNextValue = 40;
+			badNotesNumber += 1;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good'; 
 			currentScoreNextValue = 70;
+			goodNotesNumber += 1;
 			
 		}else{
 			daRating = "sick";
 			currentScoreNextValue = 100;
+			sickNotesNumber += 1;
 			
 		}
 
@@ -1166,6 +1195,7 @@ class PlayState extends MusicBeatState
 			}
 			combo = 0;
 			finalScore -= 10;
+			missedNotesNumber += 1;
 
 			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);

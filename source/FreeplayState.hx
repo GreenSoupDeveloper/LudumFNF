@@ -210,6 +210,7 @@ class FreeplayState extends MusicBeatState
 			case 2:
 				diffText.text = "HARD";
 		}
+		intendedScore = Highscore.getScore(songs[curSelected], curDifficulty);
 	}
 
 	function changeSelection(change:Int = 0)
@@ -231,7 +232,7 @@ class FreeplayState extends MusicBeatState
 		// selector.y = (70 * curSelected) + 30;
 
 		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected], curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected] + difficFreeplay, curDifficulty);
 		// lerpScore = 0;
 		#end
 
