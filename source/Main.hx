@@ -6,6 +6,7 @@ import openfl.display.Sprite;
 
 class Main extends Sprite
 {
+	public static var ludumfnfVersion:String = "0.1.0";
 	public function new()
 	{
 		super();

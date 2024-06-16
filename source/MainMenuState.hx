@@ -8,6 +8,8 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 class MainMenuState extends MusicBeatState
 {
@@ -69,6 +71,10 @@ class MainMenuState extends MusicBeatState
 		}
 
 		FlxG.camera.follow(camFollow, null, 0.06);
+		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Ludum Friday Night Funkin' v" + Main.ludumfnfVersion, 12);
+		fnfVer.scrollFactor.set();
+		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(fnfVer);
 
 		changeItem();
 
