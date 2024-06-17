@@ -77,7 +77,7 @@ class PlayState extends MusicBeatState
 	private var generatedMusic:Bool = false;
 	private var startingSong:Bool = false;
 
-	private var healthHeads:FlxSprite;
+	//private var healthHeads:FlxSprite;
 	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
@@ -89,6 +89,8 @@ class PlayState extends MusicBeatState
 
 	public var daRating:String = "sick";
 
+	//any shitty variable after this line has been added by me, greensoupdev
+
 	public var currentScoreNextValue:Int = 100;
 
 	public static var sickNotesNumber:Int = 0;
@@ -97,7 +99,10 @@ class PlayState extends MusicBeatState
 	public static var shitNotesNumber:Int = 0;
 
 	public static var missedNotesNumber:Int = 0;
+	var scoreTxt:FlxText;
 
+	private var iconP1:HealthIcon;
+	private var iconP2:HealthIcon;
 
 	
 	override public function create()
@@ -270,15 +275,18 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		healthHeads = new FlxSprite();
-		var headTex = FlxAtlasFrames.fromSparrow(AssetPaths.healthHeads__png, AssetPaths.healthHeads__xml);
-		healthHeads.frames = headTex;
-		healthHeads.animation.add('healthy', [0]);
-		healthHeads.animation.add('unhealthy', [1]);
-		healthHeads.y = healthBar.y - (healthHeads.height / 2);
-		healthHeads.scrollFactor.set();
-		healthHeads.antialiasing = true;
-		add(healthHeads);
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, "", 20);
+		scoreTxt.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
+		add(scoreTxt);
+
+		iconP1 = new HealthIcon(SONG.player1, true);
+		iconP1.y = healthBar.y - (iconP1.height / 2);
+		add(iconP1);
+
+		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2.y = healthBar.y - (iconP2.height / 2);
+		add(iconP2);
 
 		// healthBar.visible = healthHeads.visible = healthBarBG.visible = false;
 		if (isStoryMode)
@@ -294,7 +302,9 @@ class PlayState extends MusicBeatState
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
-		healthHeads.cameras = [camHUD];
+		iconP1.cameras = [camHUD];
+		iconP2.cameras = [camHUD];
+		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
@@ -322,6 +332,7 @@ class PlayState extends MusicBeatState
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
+			//FlxG.sound.play('assets/sounds/chartEditor/Metronome_Tick' + TitleState.soundExt);
 			dad.dance();
 			gf.dance();
 			boyfriend.playAnim('idle');
@@ -621,13 +632,20 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		healthHeads.setGraphicSize(Std.int(FlxMath.lerp(100, healthHeads.width, 0.98)));
-		healthHeads.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (healthHeads.width / 2);
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
+		iconP1.updateHitbox();
+		iconP2.updateHitbox();
 
-		if (healthBar.percent < 20)
+		var iconOffset:Int = 26;
+
+		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+
+		/*if (healthBar.percent < 20)
 			healthHeads.animation.play('unhealthy');
 		else
-			healthHeads.animation.play('healthy');
+			healthHeads.animation.play('healthy');*/
 
 		/* if (FlxG.keys.justPressed.NINE)
 			FlxG.switchState(new Charting()); */
@@ -636,6 +654,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 			FlxG.switchState(new ChartingState());
+		if(Main.ludumDEBUG){
 		if (FlxG.keys.justPressed.FIVE){
 			//finalScore = combo;
 			FlxG.switchState(new SuccessState());}
@@ -663,7 +682,7 @@ class PlayState extends MusicBeatState
 			if (FlxG.keys.justPressed.SIX){
 				finalScore = 1111;
 				FlxG.switchState(new SuccessState());}
-	
+			}
 		if (FlxG.keys.justPressed.R){
 			boyfriend.stunned = true;
 
@@ -676,6 +695,9 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play('assets/sounds/bfDie'+ TitleState.soundExt, 0.7);
 			FlxG.switchState(new GameOverState());
 		}
+		scoreTxt.text = "Score:" + finalScore;
+
+		
 		if (startingSong)
 		{
 			if (startedCountdown)
@@ -937,25 +959,25 @@ class PlayState extends MusicBeatState
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
 			daRating = 'shit';
-			currentScoreNextValue = 10;
+			currentScoreNextValue = 40;
 			shitNotesNumber += 1;
 		
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
 			daRating = 'bad'; 
-			currentScoreNextValue = 40;
+			currentScoreNextValue = 90;
 			badNotesNumber += 1;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
 			daRating = 'good'; 
-			currentScoreNextValue = 70;
+			currentScoreNextValue = 150;
 			goodNotesNumber += 1;
 			
 		}else{
 			daRating = "sick";
-			currentScoreNextValue = 100;
+			currentScoreNextValue = 300;
 			sickNotesNumber += 1;
 			
 		}
@@ -1364,7 +1386,7 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-
+		//FlxG.sound.play('assets/sounds/chartEditor/Metronome_Tick' + TitleState.soundExt);
 		if (generatedMusic)
 		{
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
@@ -1389,7 +1411,7 @@ class PlayState extends MusicBeatState
 		if (camZooming && FlxG.camera.zoom < 1.35 && totalBeats % 4 == 0)
 			FlxG.camera.zoom += 0.025;
 
-		healthHeads.setGraphicSize(Std.int(healthHeads.width + 20));
+		//healthHeads.setGraphicSize(Std.int(healthHeads.width + 20));
 
 		if (totalBeats % gfSpeed == 0)
 		{

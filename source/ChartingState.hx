@@ -74,10 +74,36 @@ class ChartingState extends MusicBeatState
 
 	var vocals:FlxSound;
 
+	//any variable that comes after this line has been added by me: greensoupdev
+
+	var leftIcon:HealthIcon;
+	var rightIcon:HealthIcon;
+
+	var noteSound:Bool = false;
 	override function create()
 	{
+		var bg:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.menuDesat__png);
+		bg.antialiasing = true;
+		bg.scrollFactor.set();
+		bg.color = 0xFF222222;
+		add(bg);
+
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
+
+		leftIcon = new HealthIcon('bf');
+		rightIcon = new HealthIcon('dad');
+		leftIcon.scrollFactor.set(1, 1);
+		rightIcon.scrollFactor.set(1, 1);
+
+		leftIcon.setGraphicSize(0, 45);
+		rightIcon.setGraphicSize(0, 45);
+
+		add(leftIcon);
+		add(rightIcon);
+
+		leftIcon.setPosition(0, -100);
+		rightIcon.setPosition(gridBG.width / 2, -100);
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
@@ -87,9 +113,9 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			_song = {
-				song: 'Monster',
+				song: 'Greenie',
 				notes: [],
-				bpm: 95,
+				bpm: 160,
 				sections: 0,
 				needsVoices: false,
 				player1: 'bf',
@@ -164,7 +190,7 @@ class ChartingState extends MusicBeatState
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
-			loadSong(_song.song);
+			loadSong(_song.song.toLowerCase());
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
@@ -194,6 +220,8 @@ class ChartingState extends MusicBeatState
 		});
 
 		player2DropDown.selectedLabel = _song.player2;
+
+
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -270,8 +298,18 @@ class ChartingState extends MusicBeatState
 
 		var applyLength:FlxButton = new FlxButton(100, 10, 'Apply');
 
+		var check_note_sounds = new FlxUICheckBox(10, 35, null, null, "Play Note Sounds", 100);
+		check_note_sounds.checked = true;
+		noteSound = check_note_sounds.checked;
+		check_note_sounds.callback = function()
+		{
+			noteSound = check_note_sounds.checked;
+			trace('NOTE SOUND CHECKED!');
+		};
+
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(applyLength);
+		//tab_group_note.add(check_note_sounds);
 
 		UI_box.addGroup(tab_group_note);
 	}
@@ -283,11 +321,12 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.stop();
 			// vocals.stop();
 		}
+		FlxG.sound.playMusic('assets/music/chartEditor/chartEditorLoop' + TitleState.soundExt, 0.6);
 
-		FlxG.sound.playMusic('assets/music/' + daSong + "_Inst" + TitleState.soundExt, 0.6);
+		FlxG.sound.playMusic('assets/songs/' + daSong.toLowerCase() + "/Inst" + TitleState.soundExt, 0.6);
 
-		// WONT WORK FOR TUTORIAL! REDO LATER
-		vocals = new FlxSound().loadEmbedded("assets/music/" + daSong + "_Voices" + TitleState.soundExt);
+		// WONT WORK FOR TUTORIAL! REDO LATER. GREENSOUPDEV NOTE: dont worry cameron, i fixed it 4 years later.
+		vocals = new FlxSound().loadEmbedded("assets/songs/" + daSong.toLowerCase() + "/Voices" + TitleState.soundExt);
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
@@ -367,7 +406,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params);
+		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params); + WEED
 	}
 
 	var updatedSection:Bool = false;
@@ -381,8 +420,10 @@ class ChartingState extends MusicBeatState
 
 		if (curBeat % 4 == 0)
 		{
+			//FlxG.sound.play('assets/sounds/chartEditor/Metronome_Tick' + TitleState.soundExt);
 			if (curStep > (_song.notes[curSection].lengthInSteps) * (curSection + 1))
 			{
+				FlxG.sound.play('assets/sounds/chartEditor/Metronome_Tick' + TitleState.soundExt);
 				trace(curStep);
 				trace((_song.notes[curSection].lengthInSteps) * (curSection + 1));
 				trace('DUMBSHIT');
@@ -509,6 +550,7 @@ class ChartingState extends MusicBeatState
 
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true):Void
 	{
+		
 		trace('changing section' + sec);
 
 		if (_song.notes[sec] != null)
@@ -563,7 +605,22 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection.checked = sec.mustHitSection;
 		check_changeBPM.checked = sec.changeBPM;
 		stepperSectionBPM.value = sec.bpm;
+
+		updateHeads();
 	}
+	function updateHeads():Void
+		{
+			if (check_mustHitSection.checked)
+			{
+				leftIcon.animation.play('bf');
+				rightIcon.animation.play('dad');
+			}
+			else
+			{
+				leftIcon.animation.play('dad');
+				rightIcon.animation.play('bf');
+			}
+		}
 
 	function updateNoteUI():Void
 	{
@@ -572,6 +629,7 @@ class ChartingState extends MusicBeatState
 
 	function updateGrid():Void
 	{
+		//FlxG.sound.play('assets/sounds/chartEditor/Metronome_Tick' + TitleState.soundExt);
 		while (curRenderedNotes.members.length > 0)
 		{
 			curRenderedNotes.remove(curRenderedNotes.members[0], true);
@@ -758,7 +816,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		PlayState.SONG = Song.loadFromJson(song);
+		PlayState.SONG = Song.loadFromJson(song, song);
 		FlxG.resetState();
 	}
 
