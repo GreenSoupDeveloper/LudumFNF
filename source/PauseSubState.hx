@@ -38,7 +38,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		menuItems = ['Resume', 'Restart Song', 'Exit to menu'];
 
-		pauseMusic = new FlxSound().loadEmbedded('assets/music/breakfast' + TitleState.soundExt, true, true);
+		pauseMusic = new FlxSound().loadEmbedded('assets/music/pause/breakfast' + TitleState.soundExt, true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 

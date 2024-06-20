@@ -175,11 +175,11 @@ class FreeplayState extends MusicBeatState
 		
 
 		
-			if(songs[curSelected].toLowerCase() == "monster"){
+			/*if(songs[curSelected].toLowerCase() == "monster"){
 			PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase(), songs[curSelected].toLowerCase());
-			}else{
+			}else{*/
 				PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase() + difficFreeplay, songs[curSelected].toLowerCase());
-			}
+			//}
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			FlxG.switchState(new PlayState());

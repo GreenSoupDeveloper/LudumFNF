@@ -45,18 +45,19 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [['Tutorial'],  ['Bopeebo', 'Fresh', 'Dadbattle'], ['Spookeez', 'South']];
+	var weekData:Array<Dynamic> = [['Tutorial'],  ['Bopeebo', 'Fresh', 'Dadbattle'], ['Spookeez', 'South'], ['Pico', 'Philly', 'Blammed']];
 	public static var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, false];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true];
 
-	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['dad', 'bf', 'gf'], ['spooky', 'bf', 'gf']];
+	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['dad', 'bf', 'gf'], ['spooky', 'bf', 'gf'], ['pico', 'bf', 'gf']];
 	var curWeek:Int = 0;
 
 	var weekNames:Array<String> = [
-		"Teaching the funk",
+		"Teaching time",
 		"Daddy Dearest",
-		"Spooky Month"
+		"Spooky Month",
+		"PICO"
 	];
 
 	var txtTracklist:FlxText;
@@ -138,6 +139,10 @@ class StoryMenuState extends MusicBeatState
 				case 'gf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
+				case 'pico':
+					weekCharacterThing.y += 170;
+					weekCharacterThing.flipX = true;
+					weekCharacterThing.x -= 40;
 			}
 
 			grpWeekCharacters.add(weekCharacterThing);
@@ -351,6 +356,7 @@ class StoryMenuState extends MusicBeatState
 		grpWeekCharacters.members[0].animation.play(weekCharacters[curWeek][0]);
 		grpWeekCharacters.members[1].animation.play(weekCharacters[curWeek][1]);
 		grpWeekCharacters.members[2].animation.play(weekCharacters[curWeek][2]);
+	
 		txtTracklist.text = "Tracks\n";
 
 		var stringThing:Array<String> = weekData[curWeek];

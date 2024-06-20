@@ -41,6 +41,7 @@ class SuccessState extends MusicBeatState
 	var transitionAnimTime:Float = 2.5;
 	override function create()
 		{
+			//horribly coded, but works so..
 			if(PlayState.missedNotesNumber > PlayState.sickNotesNumber && PlayState.missedNotesNumber > PlayState.goodNotesNumber && PlayState.missedNotesNumber > PlayState.badNotesNumber && PlayState.missedNotesNumber > PlayState.shitNotesNumber){
 				instantShitScore = true;
 			}else{

@@ -10,6 +10,7 @@ class Main extends Sprite
 	public static var ludumDEBUG:Bool = true;
 	public function new()
 	{
+		//SkipSplash = true;
 		super();
 		addChild(new FlxGame(0, 0, TitleState));
 

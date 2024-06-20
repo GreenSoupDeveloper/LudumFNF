@@ -118,6 +118,7 @@ class ChartingState extends MusicBeatState
 				bpm: 160,
 				sections: 0,
 				needsVoices: false,
+				stage: 'stage',
 				player1: 'bf',
 				player2: 'dad',
 				sectionLengths: [],
@@ -182,7 +183,17 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			trace('CHECKED!');
 		};
+		var check_mute_inst = new FlxUICheckBox(10, 200, null, null, "Mute Instrumental (in editor)", 100);
+		check_mute_inst.checked = false;
+		check_mute_inst.callback = function()
+		{
+			var vol:Float = 1;
 
+			if (check_mute_inst.checked)
+				vol = 0;
+
+			FlxG.sound.music.volume = vol;
+		};
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
 		{
 			saveLevel();
@@ -206,7 +217,9 @@ class ChartingState extends MusicBeatState
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var characters:Array<String> = ["bf", 'dad', 'gf', 'spooky', 'monster'];
+		var characters:Array<String> = ["bf", 'dad', 'gf', 'spooky', 'monster', 'pico'];
+
+		var stages:Array<String> = ["stage", 'spooky', 'philly'];
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -221,6 +234,13 @@ class ChartingState extends MusicBeatState
 
 		player2DropDown.selectedLabel = _song.player2;
 
+		var songStageDropDown = new FlxUIDropDownMenu(10, 130, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
+			{
+				_song.stage = stages[Std.parseInt(stage)];
+			});
+	
+			songStageDropDown.selectedLabel = _song.stage;
+
 
 
 		var tab_group_song = new FlxUI(null, UI_box);
@@ -228,6 +248,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(UI_songTitle);
 
 		tab_group_song.add(check_voices);
+		tab_group_song.add(check_mute_inst);
 		tab_group_song.add(saveButton);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
@@ -235,6 +256,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(stepperSpeed);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(player2DropDown);
+		tab_group_song.add(songStageDropDown);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.scrollFactor.set();
@@ -246,10 +268,10 @@ class ChartingState extends MusicBeatState
 	var check_mustHitSection:FlxUICheckBox;
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
+	//var check_altAnim:FlxUICheckBox;
 
 	function addSectionUI():Void
-	{
-		var tab_group_section = new FlxUI(null, UI_box);
+	{var tab_group_section = new FlxUI(null, UI_box);
 		tab_group_section.name = 'Section';
 
 		stepperLength = new FlxUINumericStepper(10, 10, 4, 0, 0, 999, 0);
@@ -260,17 +282,33 @@ class ChartingState extends MusicBeatState
 		stepperSectionBPM.value = Conductor.bpm;
 		stepperSectionBPM.name = 'section_bpm';
 
-		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 30, 1, 1, -999, 999, 0);
+		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 130, 1, 1, -999, 999, 0);
 
-		var copyButton:FlxButton = new FlxButton(110, 8, "Copy last section", function()
+		var copyButton:FlxButton = new FlxButton(10, 130, "Copy last section", function()
 		{
 			copySection(Std.int(stepperCopy.value));
+		});
+
+		var clearSectionButton:FlxButton = new FlxButton(10, 150, "Clear", clearSection);
+
+		var swapSection:FlxButton = new FlxButton(10, 170, "Swap section", function()
+		{
+			for (i in 0..._song.notes[curSection].sectionNotes.length)
+			{
+				var note = _song.notes[curSection].sectionNotes[i];
+				note[1] = (note[1] + 4) % 8;
+				_song.notes[curSection].sectionNotes[i] = note;
+				updateGrid();
+			}
 		});
 
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = true;
 		// _song.needsVoices = check_mustHit.checked;
+
+		/*check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
+		check_altAnim.name = 'check_altAnim';*/
 
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
 		check_changeBPM.name = 'check_changeBPM';
@@ -279,8 +317,11 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(check_mustHitSection);
+		//tab_group_section.add(check_altAnim);
 		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
+		tab_group_section.add(clearSectionButton);
+		tab_group_section.add(swapSection);
 
 		UI_box.addGroup(tab_group_section);
 	}
@@ -734,6 +775,12 @@ class ChartingState extends MusicBeatState
 
 		updateGrid();
 	}
+	function clearSection():Void
+		{
+			_song.notes[curSection].sectionNotes = [];
+	
+			updateGrid();
+		}
 
 	function clearSong():Void
 	{
@@ -826,7 +873,8 @@ class ChartingState extends MusicBeatState
 			"song": _song,
 			"bpm": Conductor.bpm,
 			"sections": _song.notes.length,
-			'notes': _song.notes
+			'notes': _song.notes,
+			'stage': _song.stage
 		};
 
 		var data:String = Json.stringify(json);
