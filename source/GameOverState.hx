@@ -51,6 +51,7 @@ class GameOverState extends FlxTransitionableState
 		
 				if (FlxG.keys.justPressed.ESCAPE)
 				{
+					PlayState.songPlaying = false;
 					PlayState.finalScore = 0;
 					PlayState.sickNotesNumber = 0;
 					PlayState.goodNotesNumber = 0;

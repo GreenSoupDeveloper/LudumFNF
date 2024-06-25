@@ -132,7 +132,7 @@ class Alphabet extends FlxSpriteGroup
 		new FlxTimer().start(0.05, function(tmr:FlxTimer)
 		{
 			// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
-			if (_finalText.fastCodeAt(loopNum) == "\n".code)
+			if (_finalText.fastCodeAt(loopNum) == "/".code)
 			{
 				yMulti += 1;
 				xPosResetted = true;
@@ -195,8 +195,20 @@ class Alphabet extends FlxSpriteGroup
 
 				if (FlxG.random.bool(40))
 				{
-					var daSound:String = "GF_";
-					FlxG.sound.play('assets/sounds/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
+					if(PlayState.talking == true){
+					switch (PlayState.SONG.player2.toLowerCase())
+					{
+						case 'gf':
+							var daSound:String = "GF_";
+					        FlxG.sound.play('assets/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
+						case 'dad':
+							var daSound:String = "DAD_";
+					        FlxG.sound.play('assets/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
+						default:
+							var daSound:String = "";
+					        FlxG.sound.play('assets/sounds/chartEditor/metronomeTick'+ TitleState.soundExt, 0.4);
+					}
+				}
 				}
 
 				add(letter);

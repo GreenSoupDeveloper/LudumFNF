@@ -39,8 +39,10 @@ class SuccessState extends MusicBeatState
 	public static var finalScoreNote:Int;
 	public var instantShitScore:Bool = false;
 	var transitionAnimTime:Float = 2.5;
+	public static var pressedNotes:Int;
 	override function create()
 		{
+			pressedNotes = PlayState.unspawnNotes.length; //wip, ill apply it latr to the success score shit cuz rn its coded like shit and takes unprecise values
 			//horribly coded, but works so..
 			if(PlayState.missedNotesNumber > PlayState.sickNotesNumber && PlayState.missedNotesNumber > PlayState.goodNotesNumber && PlayState.missedNotesNumber > PlayState.badNotesNumber && PlayState.missedNotesNumber > PlayState.shitNotesNumber){
 				instantShitScore = true;

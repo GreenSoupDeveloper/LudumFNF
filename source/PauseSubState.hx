@@ -125,6 +125,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
+					PlayState.songPlaying = false;
 					PlayState.finalScore = 0;
 					PlayState.sickNotesNumber = 0;
 					PlayState.goodNotesNumber = 0;
@@ -133,6 +134,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.missedNotesNumber = 0;
 					FlxG.resetState();
 				case "Exit to menu":
+					PlayState.songPlaying = false;
 					PlayState.finalScore = 0;
 					PlayState.sickNotesNumber = 0;
 					PlayState.goodNotesNumber = 0;

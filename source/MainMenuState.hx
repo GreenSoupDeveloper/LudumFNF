@@ -21,6 +21,7 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+	var enteredOtherState:Bool = false;
 
 	override function create()
 	{
@@ -99,17 +100,28 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.switchState(new TitleState());
 		}
+		if (FlxG.keys.justPressed.SEVEN){
+			PlayState.isStoryMode = true;
+			FlxG.switchState(new ChartingState());
+		}
+		if (FlxG.keys.justPressed.NINE){
+			PlayState.isStoryMode = true;
+			FlxG.switchState(new DialogueEditorState());
+		}
 
 		super.update(elapsed);
 
 		if (controls.ACCEPT)
 		{
+			if(enteredOtherState == false){
 			if (optionShit[curSelected] == 'donate')
 			{
+				enteredOtherState = true;
 				FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 			}
 			else
 			{
+				enteredOtherState = true;
 				FlxG.sound.play('assets/sounds/confirmMenu' + TitleState.soundExt);
 
 				FlxFlicker.flicker(magenta, 1.1, 0.15, false);
@@ -143,6 +155,7 @@ class MainMenuState extends MusicBeatState
 					}
 				});
 			}
+		}
 		}
 
 		menuItems.forEach(function(spr:FlxSprite)

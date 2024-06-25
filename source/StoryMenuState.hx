@@ -45,19 +45,32 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [['Tutorial'],  ['Bopeebo', 'Fresh', 'Dadbattle'], ['Spookeez', 'South'], ['Pico', 'Philly', 'Blammed']];
+	var weekData:Array<Dynamic> = [
+		['Tutorial'],
+		['Bopeebo', 'Fresh', 'Dadbattle'],
+		['Spookeez', 'South'],
+		['Pico', 'Philly', "Blammed"],
+		['Satin-Panties', "High", "Milf"]
+	];
 	public static var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true];
 
-	var weekCharacters:Array<Dynamic> = [['dad', 'bf', 'gf'], ['dad', 'bf', 'gf'], ['spooky', 'bf', 'gf'], ['pico', 'bf', 'gf']];
+	var weekCharacters:Array<Dynamic> = [
+		['dad', 'bf', 'gf'],
+		['dad', 'bf', 'gf'],
+		['spooky', 'bf', 'gf'],
+		['pico', 'bf', 'gf'],
+		['mom', 'bf', 'gf']
+	];
 	var curWeek:Int = 0;
 
 	var weekNames:Array<String> = [
 		"Teaching time",
 		"Daddy Dearest",
 		"Spooky Month",
-		"PICO"
+		"PICO",
+		"Mommy must murder"
 	];
 
 	var txtTracklist:FlxText;

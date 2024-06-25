@@ -35,7 +35,7 @@ class TitleState extends MusicBeatState
 		['Ritz dx', 'rest in peace'], ['rate five', 'pls no blam'], ['rhythm gaming', 'ultimate'], ['game of the year', 'forever'],
 		['you already know', 'we really out here'], ['rise and grind', 'love to luis'], ['like parappa', 'but cooler'],
 		['album of the year', 'chuckie finster'], ["free gitaroo man", "with love to wandaboy"], ['better than geometry dash', 'fight me robtop'],
-		['kiddbrute for president', 'vote now']];
+		['kiddbrute for president', 'vote now'], ["greensoupdev", "did this"]];
 
 	var curWacky:Array<String> = [];
 
@@ -150,6 +150,17 @@ class TitleState extends MusicBeatState
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
+		if(Main.ludumDEBUG){
+		if (FlxG.keys.justPressed.SEVEN){
+			PlayState.SONG = Song.loadFromJson("ridge", "ridge");
+			//}
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = 1;
+			FlxG.switchState(new PlayState());
+			if (FlxG.sound.music != null)
+				FlxG.sound.music.stop();
+		}
+	}
 		if (gamepad != null)
 		{
 			if (gamepad.justPressed.START)
@@ -166,19 +177,9 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				// Check if version is outdated
-
-				var version:String = "v" + Main.ludumfnfVersion;
-
-				if (version.trim() != NGio.GAME_VER_NUMS && !OutdatedSubState.leftState)
-				{
-					trace('OLD VERSION!');
-					FlxG.switchState(new OutdatedSubState());
-				}
-				else
-				{
+				
 					FlxG.switchState(new MainMenuState());
-				}
+				
 			});
 			// FlxG.sound.play('assets/music/titleShoot' + TitleState.soundExt, 0.7);
 		}
@@ -260,24 +261,21 @@ class TitleState extends MusicBeatState
 			case 11:
 				addMoreText(curWacky[1]);
 			// credTextShit.text += '\nlmao';
+		
 			case 12:
 				deleteCoolText();
-			// credTextShit.visible = false;
-			// credTextShit.text = "Friday";
-			// credTextShit.screenCenter();
-			case 13:
 				addMoreText('Ludum'); // credTextShit.text += '\nFunkin';
-			case 14:
+			case 13:
 				
 				addMoreText('Friday');
 			// credTextShit.visible = true;
-			case 15:
+			case 14:
 				addMoreText('Night');
 			// credTextShit.text += '\nNight';
-			case 16:
+			case 15:
 				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
 
-			case 17:
+			case 16:
 				skipIntro();
 		}
 	}

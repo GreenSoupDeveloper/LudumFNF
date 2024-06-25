@@ -11,11 +11,18 @@ class DialogueBox extends FlxSpriteGroup
 	var box:FlxSprite;
 
 	var dialogue:Alphabet;
-	var dialogueList:Array<String> = [];
+	
+	public var dialogueList:Array<String> = [];
 
 	public var finishThing:Void->Void;
-
-	public function new(talkingRight:Bool = true, ?dialogueList:Array<String>)
+    public var loopingDialog:Bool = false;
+	public static var dialogueLine:Int = 0;
+	var finishedEditorText:Bool = false;
+	var dialogueOpened:Bool = false;
+	var dialogueStarted:Bool = false;
+	
+	
+	public function new(talkingRight:Bool = true, loopDialog:Bool = false, ?dialogSex:Array<String>)
 	{
 		super();
 
@@ -30,16 +37,25 @@ class DialogueBox extends FlxSpriteGroup
 		{
 			box.flipX = true;
 		}
+		loopingDialog = loopDialog;
 
 		dialogue = new Alphabet(0, 80, "", false, true);
 		// dialogue.x = 90;
 		add(dialogue);
-
-		this.dialogueList = dialogueList;
+		
+		dialogueLine = 0;
+		dialogueList = dialogSex;
+		
+		
+	
+		
 	}
 
-	var dialogueOpened:Bool = false;
-	var dialogueStarted:Bool = false;
+	
+
+
+
+	
 
 	override function update(elapsed:Float)
 	{
@@ -49,6 +65,8 @@ class DialogueBox extends FlxSpriteGroup
 			{
 				box.animation.play('normal');
 				dialogueOpened = true;
+				
+				
 			}
 		}
 
@@ -61,17 +79,27 @@ class DialogueBox extends FlxSpriteGroup
 		if (FlxG.keys.justPressed.SPACE)
 		{
 			remove(dialogue);
+			if (dialogueList[dialogueLine] != null)
+				{
+					dialogueLine += 1;
+					
+					
+					startDialogue();
+				}
 
-			if (dialogueList[1] == null)
+			if (dialogueList[dialogueLine] == null)
 			{
-				finishThing();
-				kill();
+				if(loopingDialog == true){
+					
+					restartDialogue();
+				}else{
+				    finishThing();
+				    kill();
+					
+				}
 			}
-			else
-			{
-				dialogueList.remove(dialogueList[0]);
-				startDialogue();
-			}
+			
+			
 		}
 
 		super.update(elapsed);
@@ -79,8 +107,16 @@ class DialogueBox extends FlxSpriteGroup
 
 	function startDialogue():Void
 	{
-		var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0], false, true);
+		var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[dialogueLine], false, true);
 		dialogue = theDialog;
 		add(theDialog);
+		trace(dialogueList[dialogueLine] + " | dialog int: " + dialogueLine);
 	}
+	function restartDialogue():Void{
+		
+		dialogueLine = 0;
+		
+		startDialogue();
+	}
+	
 }
