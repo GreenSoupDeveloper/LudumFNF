@@ -10,14 +10,15 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import options.OptionsMenuState;
 
 class MainMenuState extends MusicBeatState
 {
 	var curSelected:Int = 0;
-
+	
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay', 'donate', 'options'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -29,9 +30,10 @@ class MainMenuState extends MusicBeatState
 			FlxG.sound.playMusic('assets/music/title/freakyMenu' + TitleState.soundExt);
 		persistentUpdate = persistentDraw = true;
 
+		var yScroll:Float = Math.max(0.1 - (0.02 * (optionShit.length - 4)), 0.06);
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(AssetPaths.menuBG__png);
 		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.18;
+		bg.scrollFactor.y = yScroll;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -43,7 +45,7 @@ class MainMenuState extends MusicBeatState
 
 		magenta = new FlxSprite(-80).loadGraphic(AssetPaths.menuBGMagenta__png);
 		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = 0.18;
+		magenta.scrollFactor.y = yScroll;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
 		magenta.updateHitbox();
 		magenta.screenCenter();
@@ -55,21 +57,26 @@ class MainMenuState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = FlxAtlasFrames.fromSparrow(AssetPaths.FNF_main_menu_assets__png, AssetPaths.FNF_main_menu_assets__xml);
-
+		//var tex = FlxAtlasFrames.fromSparrow(AssetPaths.FNF_main_menu_assets__png, AssetPaths.FNF_main_menu_assets__xml);
 		for (i in 0...optionShit.length)
-		{
-			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-			menuItem.frames = tex;
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-			menuItem.animation.play('idle');
-			menuItem.ID = i;
-			menuItem.screenCenter(X);
-			menuItems.add(menuItem);
-			menuItem.scrollFactor.set();
-			menuItem.antialiasing = true;
-		}
+			{
+				var offset:Float = 100 - (Math.max(optionShit.length, 4) - 4) * 80;
+				var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
+				trace("assets/images/mainMenu/menu_" + optionShit[i] + ".png");
+				menuItem.frames = FlxAtlasFrames.fromSparrow("assets/images/mainMenu/menu_" + optionShit[i] + ".png", "assets/images/mainMenu/menu_" + optionShit[i] + ".xml");
+				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+				menuItem.animation.play('idle');
+				menuItem.ID = i;
+				menuItem.screenCenter(X);
+				menuItems.add(menuItem);
+				var scr:Float = (optionShit.length - 4) * 0.135;
+				if(optionShit.length < 6) scr = 0;
+				menuItem.scrollFactor.set(0, scr);
+				menuItem.antialiasing = true;
+				//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
+				menuItem.updateHitbox();
+			}
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Ludum Friday Night Funkin' v" + Main.ludumfnfVersion, 12);
@@ -101,13 +108,12 @@ class MainMenuState extends MusicBeatState
 			FlxG.switchState(new TitleState());
 		}
 		if (FlxG.keys.justPressed.SEVEN){
-			PlayState.isStoryMode = true;
-			FlxG.switchState(new ChartingState());
+			FlxG.switchState(new MainEditorMenu());
 		}
-		if (FlxG.keys.justPressed.NINE){
+	/*	if (FlxG.keys.justPressed.NINE){
 			PlayState.isStoryMode = true;
 			FlxG.switchState(new DialogueEditorState());
-		}
+		}*/
 
 		super.update(elapsed);
 
@@ -146,10 +152,13 @@ class MainMenuState extends MusicBeatState
 
 							switch (daChoice)
 							{
-								case 'story mode':
+								case 'story_mode':
 									FlxG.switchState(new StoryMenuState());
 								case 'freeplay':
 									FlxG.switchState(new FreeplayState());
+								case 'options':
+									FlxG.sound.music.stop();
+									FlxG.switchState(new OptionsMenuState());
 							}
 						});
 					}

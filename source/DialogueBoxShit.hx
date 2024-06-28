@@ -43,7 +43,7 @@ class DialogueBoxShit
 		}
 
 		var swagDialogShit:SwagDialogue = cast Json.parse(rawJson).song;
-		trace(swagDialogShit.text[0]);
+		//trace(swagDialogShit.text);
 
 		// FIX THE CASTING ON WINDOWS/NATIVE
 		// Windows???

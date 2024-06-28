@@ -32,18 +32,16 @@ import openfl.net.FileReference;
 import flixel.util.FlxTimer;
 
 using StringTools;
-
-
 class DialogueEditorState extends MusicBeatState
 {
-	
+	var _file:FileReference;
 	var box:FlxSprite;
 	//var daText:TypedAlphabet;
 
 	var selectedText:FlxText;
 	var animText:FlxText;
     var dialogueTestEditor:Array<String> = ['blah blah blah', 'coolswag', 'swaggyness', "sex"];
-    
+    //var _dialog:SwagDialogue;
 
 
 
@@ -73,7 +71,11 @@ class DialogueEditorState extends MusicBeatState
 		animText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		animText.scrollFactor.set();
 		add(animText);
-		
+		/*_dialog = {
+            dialog: 0,
+            character: "dad",
+            text: "sex"
+        }; //wip...*/
 		openDialogueBox();
 
 		super.create();
@@ -111,18 +113,21 @@ class DialogueEditorState extends MusicBeatState
 		tab_group.name = "Dialogue Box";
 
 		
-		soundInputText = new FlxUIInputText(10, 100, 150, '', 8);
+		//soundInputText = new FlxUIInputText(10, 100, 150, '', 8);
 		//blockPressWhileTypingOn.push(soundInputText);
-
-		lineInputText = new FlxUIInputText(10, soundInputText.y + 35, 230, "coolswag", 8);
+       
+       
+		lineInputText = new FlxUIInputText(10, 135, 230, dialogueTestEditor[0] + "", 8);
 		//blockPressWhileTypingOn.push(lineInputText);
 
 	
 		var loadButton:FlxButton = new FlxButton(20, lineInputText.y + 25, "Load Dialogue", function() {
-			//loadDialogue();
+			//loadDialog("bopeebo");
 		});
 		var saveButton:FlxButton = new FlxButton(loadButton.x + 120, loadButton.y, "Save Dialogue", function() {
-			//saveDialogue();
+            // Create a handle to the file in text format (the false, true is binary)
+           
+			//saveDialog();
 		});
 
 		//tab_group.add(new FlxText(10, speedStepper.y - 18, 0, 'Interval/Speed (ms):'));
@@ -147,6 +152,74 @@ class DialogueEditorState extends MusicBeatState
             }
 		super.update(elapsed);
 	}
+   
+
+    //WIP SHIIIIT
+    /*function loadDialog(song:String):Void
+        {
+            var saveDifficulty:String = "";
+    
+    
+            if (sys.FileSystem.exists('assets/data/'+ song.toLowerCase() + '/songDialog.json')) {
+                _dialog = DialogueBoxShit.loadFromJson(song.toLowerCase());
+            }else{
+                _dialog = DialogueBoxShit.loadFromJson("bopeebo");
+            }
+            //lineInputText = _dialog.text + "";
+            FlxG.resetState();
+        }
+    
+        private function saveDialog()
+        {
+            var saveDifficulty:String = "";
+            var json = {
+                'dialog': _dialog.dialog,
+                'character': _dialog.character,
+                'text': _dialog.text
+    
+            };
+    
+          
+    
+            var data:String = Json.stringify(json);
+    
+            if ((data != null) && (data.length > 0))
+            {
+                _file = new FileReference();
+                _file.addEventListener(Event.COMPLETE, onSaveComplete);
+                _file.addEventListener(Event.CANCEL, onSaveCancel);
+                _file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+                
+                _file.save(data.trim(), "songDialog.json");
+            }
+        }
+    
+        function onSaveComplete(_):Void
+        {
+            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
+            _file.removeEventListener(Event.CANCEL, onSaveCancel);
+            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+            _file = null;
+            FlxG.log.notice("Successfully saved DIALOG DATA.");
+        }
+    
+
+        function onSaveCancel(_):Void
+        {
+            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
+            _file.removeEventListener(Event.CANCEL, onSaveCancel);
+            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+            _file = null;
+        }
+
+        function onSaveError(_):Void
+        {
+            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
+            _file.removeEventListener(Event.CANCEL, onSaveCancel);
+            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+            _file = null;
+            FlxG.log.error("Problem saving Dialog data");
+        }*/
 
 
 }
