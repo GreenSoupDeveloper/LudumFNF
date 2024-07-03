@@ -20,7 +20,7 @@ class MainEditorMenu extends MusicBeatState
 
 	override function create()
 	{
-		menuItems = ['Chart Editor', 'Dialogue Editor (BETA, COMING SOON)', 'Animation Debug State'];
+		menuItems = ['Chart Editor', 'Dialogue Editor BETA', 'Animation Debug State'];
 		var bg:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuDesat.png');
 		bg.scrollFactor.set();
 		bg.color = 0xFF353535;
@@ -62,12 +62,12 @@ class MainEditorMenu extends MusicBeatState
 			}
 		if (upP)
 		{
-			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
+			FlxG.sound.play('assets/shared/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(-1);
 		}
 		if (downP)
 		{
-			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
+			FlxG.sound.play('assets/shared/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(1);
 		}
 
@@ -78,8 +78,9 @@ class MainEditorMenu extends MusicBeatState
 			switch (daSelected)
 			{
 				case "Chart Editor":
+					PlayState.isStoryMode = true;
 					FlxG.switchState(new ChartingState());
-				case "Dialogue Editor":
+				case "Dialogue Editor BETA":
 					FlxG.switchState(new DialogueEditorState());
 				case "Animation Debug State":
 					FlxG.switchState(new AnimationDebug());

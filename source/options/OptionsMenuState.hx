@@ -1,129 +1,3 @@
-/*package options;
-
-import Controls.Control;
-import flash.text.TextField;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.input.keyboard.FlxKey;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import lime.utils.Assets;
-
-class OptionsMenuState extends MusicBeatState
-{
-	var selector:FlxText;
-	var curSelected:Int = 0;
-	private var grpOptions:FlxTypedGroup<Alphabet>;
-	var controlsStrings:Array<String> = ['Notes', 'Controls', 'Preferences'];
-
-	private var grpControls:FlxTypedGroup<Alphabet>;
-
-	override function create()
-	{
-		if (!FlxG.sound.music.playing){
-			
-			FlxG.sound.playMusic('assets/music/options/lowkeyOptions' + TitleState.soundExt);
-			FlxG.sound.music.volume = 0.35;
-		}
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuDesat.png');
-		menuBG.color = 0xFFea71fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.antialiasing = true;
-		add(menuBG);
-
-		grpOptions = new FlxTypedGroup<Alphabet>();
-		add(grpOptions);
-
-		for (i in 0...controlsStrings.length)
-		{
-			var optionText:Alphabet = new Alphabet(0, (100 * i) + 210, controlsStrings[i], true, false);
-			optionText.screenCenter(X);
-			grpOptions.add(optionText);
-		}*/
-		/*grpControls = new FlxTypedGroup<Alphabet>();
-		add(grpControls);
-
-		for (i in 0...controlsStrings.length)
-		{
-				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
-				controlLabel.isMenuItem = true;
-				controlLabel.targetY = i;
-				grpControls.add(controlLabel);
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-		}
-		changeSelection();
-		super.create();
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-	
-			if (controls.BACK){
-				FlxG.switchState(new MainMenuState());
-				FlxG.sound.music.stop();
-				FlxG.sound.music.volume = 100;
-			}
-			if (controls.UP_P)
-				changeSelection(-1);
-			if (controls.DOWN_P)
-				changeSelection(1);
-		
-	}
-	function changeSelection(change:Int = 0) {
-		curSelected += change;
-		if (curSelected < 0)
-			curSelected = options.length - 1;
-		if (curSelected >= options.length)
-			curSelected = 0;
-
-		var bullShit:Int = 0;
-
-		for (item in grpOptions.members) {
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			if (item.targetY == 0) {
-				item.alpha = 1;
-			}
-		
-	}
-}
-	
-	function changeSelection(change:Int = 0) {
-		FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
-		curSelected += change;
-		if (curSelected < 0)
-			curSelected = controlsStrings.length - 1;
-		if (curSelected >= controlsStrings.length)
-			curSelected = 0;
-
-		var bullShit:Int = 0;
-
-		for (item in grpOptions.members) {
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			if (item.targetY == 0) {
-				item.alpha = 1;
-			}
-		}
-	}
-
-
-
-	
-}
-*/
-
 package options;
 
 import Controls.Control;
@@ -143,17 +17,21 @@ class OptionsMenuState extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var controlsStrings:Array<String> = ['Controls: WASD', 'Music: True', 'Sound: True'];
+	var optionsStrings:Array<String> = [];
 
 	private var grpControls:FlxTypedGroup<Alphabet>;
 
 	override function create()
 	{
-		if (!FlxG.sound.music.playing){
-			
-			FlxG.sound.playMusic('assets/music/options/lowkeyOptions' + TitleState.soundExt);
+		if (!FlxG.sound.music.playing)
+		{
+			FlxG.sound.playMusic('assets/shared/music/options/lowkeyOptions' + TitleState.soundExt);
 			FlxG.sound.music.volume = 0.35;
 		}
+		optionsStrings = [
+			'Old Game Over Screen = ' + GameOptions.oldGameOverMenu,
+			'Old Title Screen = ' + GameOptions.oldTitleScreen
+		];
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuDesat.png');
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -165,13 +43,13 @@ class OptionsMenuState extends MusicBeatState
 		grpControls = new FlxTypedGroup<Alphabet>();
 		add(grpControls);
 
-		for (i in 0...controlsStrings.length)
+		for (i in 0...optionsStrings.length)
 		{
-				var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, controlsStrings[i], true, false);
-				controlLabel.isMenuItem = true;
-				controlLabel.targetY = i;
-				grpControls.add(controlLabel);
-			
+			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, optionsStrings[i], true, false);
+			controlLabel.isMenuItem = true;
+			controlLabel.targetY = i;
+			grpControls.add(controlLabel);
+
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
@@ -179,44 +57,58 @@ class OptionsMenuState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float)
-		{
-			super.update(elapsed);
-	
-		
-				if (controls.BACK){
-					FlxG.switchState(new MainMenuState());
-					FlxG.sound.music.stop();
-					FlxG.sound.music.volume = 100;
-				}
-				if (controls.UP_P)
-					changeSelection(-1);
-				if (controls.DOWN_P)
-					changeSelection(1);
-			
-		}
-
-	function waitingInput():Void
 	{
-		if (FlxG.keys.getIsDown().length > 0)
+		super.update(elapsed);
+
+		if (controls.BACK)
 		{
-			PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxG.keys.getIsDown()[0].ID, null);
+			FlxG.switchState(new MainMenuState());
+			FlxG.sound.music.stop();
+			FlxG.sound.music.volume = 100;
 		}
-		// PlayerSettings.player1.controls.replaceBinding(Control)
-	}
+		if (controls.UP_P)
+			changeSelection(-1);
+		if (controls.DOWN_P)
+			changeSelection(1);
 
-	var isSettingControl:Bool = false;
-
-	function changeBinding():Void
-	{
-		if (!isSettingControl)
+		if (controls.ACCEPT)
 		{
-			isSettingControl = true;
+			switch (curSelected)
+			{
+				case 0:
+					if (GameOptions.oldGameOverMenu == false)
+					{
+						GameOptions.oldGameOverMenu = true;
+						FlxG.save.data.oldGameOverMenu = GameOptions.oldGameOverMenu;
+						FlxG.save.flush();
+					}
+					else
+					{
+						GameOptions.oldGameOverMenu = false;
+						FlxG.save.data.oldGameOverMenu = GameOptions.oldGameOverMenu;
+						FlxG.save.flush();
+					}
+				case 1:
+					if (GameOptions.oldTitleScreen == false)
+					{
+						GameOptions.oldTitleScreen = true;
+						FlxG.save.data.oldTitleScreen = GameOptions.oldTitleScreen;
+						FlxG.save.flush();
+					}
+					else
+					{
+						GameOptions.oldTitleScreen = false;
+						FlxG.save.data.oldTitleScreen = GameOptions.oldTitleScreen;
+						FlxG.save.flush();
+					}
+			}
+			FlxG.resetState();
 		}
 	}
 
 	function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt, 0.4);
+		FlxG.sound.play('assets/shared/sounds/scrollMenu' + TitleState.soundExt, 0.4);
 
 		curSelected += change;
 

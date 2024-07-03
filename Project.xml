@@ -35,14 +35,16 @@
 
 	<assets path="assets/images"/>
 	<assets path="assets/data"/>
+        <assets path="assets/shared"/>
+
 	<assets path="assets/songs" include="*.mp3" if="web" />
 	<assets path="assets/songs" include="*.ogg" unless="web" />
 
 
-	<assets path="assets/music" include="*.mp3" if="web" />
-	<assets path="assets/music" include="*.ogg" unless="web" />
-	<assets path="assets/sounds" include="*.mp3" if="web" />
-	<assets path="assets/sounds" include="*.ogg" unless="web" />
+	<assets path="assets/shared/music" include="*.mp3" if="web" />
+	<assets path="assets/shared/music" include="*.ogg" unless="web" />
+	<assets path="assets/shared/sounds" include="*.mp3" if="web" />
+	<assets path="assets/shared/sounds" include="*.ogg" unless="web" />
 
 	<assets path="assets/fonts/vcr.ttf" embed="true" />
 

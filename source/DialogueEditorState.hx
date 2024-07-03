@@ -32,71 +32,79 @@ import openfl.net.FileReference;
 import flixel.util.FlxTimer;
 
 using StringTools;
+
 class DialogueEditorState extends MusicBeatState
 {
-	var _file:FileReference;
+	// var _file:FileReference;
 	var box:FlxSprite;
-	//var daText:TypedAlphabet;
 
-	var selectedText:FlxText;
-	var animText:FlxText;
-    var dialogueTestEditor:Array<String> = ['blah blah blah', 'coolswag', 'swaggyness', "sex"];
-    //var _dialog:SwagDialogue;
+	// var daText:TypedAlphabet;
+	public static var selectedText:FlxText;
 
+	var dialogAmountText:FlxText;
+	var dialogueTestEditor:Array<String> = ['sex', ':dad:_normal_blah blah blah'];
+	var dialogAmount:Int = 1;
 
+	// var _dialog:SwagDialogue;
+	// bro seriously i gotta fix this shitty state
 
-	override function create() {
+	override function create()
+	{
 		FlxG.sound.music.stop();
 		FlxG.mouse.visible = true;
-        
-        var bg:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.menuDesat__png);
+
+		var bg:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.menuDesat__png);
 		bg.antialiasing = true;
 		bg.scrollFactor.set();
 		bg.color = 0xFF494949;
 		add(bg);
 
-        addEditorBox();
-        
-		var addLineText:FlxText = new FlxText(10, 10, FlxG.width - 20, 'Press O to remove the current dialogue line, Press P to add another line after the current one.', 8);
+		var addLineText:FlxText = new FlxText(10, 10, FlxG.width - 20,
+			'Press ALT to remove the current dialogue line, Press CONTROL to add another line after the current one.', 8);
 		addLineText.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		addLineText.scrollFactor.set();
 		add(addLineText);
 
-		selectedText = new FlxText(10, 32, FlxG.width - 20, '', 8);
+		selectedText = new FlxText(10, 32, FlxG.width - 20, 'Current Dialog: 1', 8);
 		selectedText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		selectedText.scrollFactor.set();
 		add(selectedText);
 
-		animText = new FlxText(10, 62, FlxG.width - 20, '', 8);
-		animText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		animText.scrollFactor.set();
-		add(animText);
-		/*_dialog = {
-            dialog: 0,
-            character: "dad",
-            text: "sex"
-        }; //wip...*/
+		dialogAmountText = new FlxText(10, 62, FlxG.width - 20, 'Dialogs: ' + dialogAmount, 8);
+		dialogAmountText.setFormat("assets/fonts/vcr.ttf", 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		dialogAmountText.scrollFactor.set();
+		add(dialogAmountText);
+
+		var addLineText:FlxText = new FlxText(10, 94, FlxG.width - 20,
+			'HAVE IN MIND THAT THIS THING IS IN A BETA AND VERY UNSTABLE STATE, TAKE CARE.', 8);
+		addLineText.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		addLineText.scrollFactor.set();
+		add(addLineText);
+
 		openDialogueBox();
+		addEditorBox();
+
+		
 
 		super.create();
 	}
-    
-    function openDialogueBox(){
-        
-        var dialogueBox:DialogueBox = new DialogueBox(false, true, dialogueTestEditor);
+
+	function openDialogueBox()
+	{
+		var dialogueBox:DialogueBox = new DialogueBox(false, true, dialogueTestEditor);
 		// doof.x += 70;
 		dialogueBox.y = FlxG.height * 0.5;
 		dialogueBox.scrollFactor.set();
-   
-		//dialogueBox.finishThing = dialogueBoxRestart;
-        add(dialogueBox);
-    }
-   
+
+		// dialogueBox.finishThing = dialogueBoxRestart;
+		add(dialogueBox);
+	}
+
 	var UI_box:FlxUITabMenu;
-	function addEditorBox() {
-		var tabs = [
-			{name: 'Dialogue Box', label: 'Dialogue Box'},
-		];
+
+	function addEditorBox()
+	{
+		var tabs = [{name: 'Dialogue Box', label: 'Dialogue Box'},];
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.resize(250, 210);
 		UI_box.x = FlxG.width - UI_box.width - 10;
@@ -106,120 +114,125 @@ class DialogueEditorState extends MusicBeatState
 		add(UI_box);
 	}
 
-	var lineInputText:FlxUIInputText;
-    var soundInputText:FlxUIInputText;
-	function addDialogueBoxUI() {
-		var tab_group = new FlxUI(null, UI_box);
-		tab_group.name = "Dialogue Box";
+	public static var lineInputText:FlxUIInputText;
+	public static var characterInputText:FlxUIInputText;
+	public static var boxTypeInputText:FlxUIInputText;
 
-		
-		//soundInputText = new FlxUIInputText(10, 100, 150, '', 8);
-		//blockPressWhileTypingOn.push(soundInputText);
-       
-       
-		lineInputText = new FlxUIInputText(10, 135, 230, dialogueTestEditor[0] + "", 8);
-		//blockPressWhileTypingOn.push(lineInputText);
+	function addDialogueBoxUI()
+	{
+		var tab_group_dialog = new FlxUI(null, UI_box);
+		tab_group_dialog.name = "Dialogue Box";
 
-	
-		var loadButton:FlxButton = new FlxButton(20, lineInputText.y + 25, "Load Dialogue", function() {
-			//loadDialog("bopeebo");
+		boxTypeInputText = new FlxUIInputText(10, 65, 150, 'normal', 8);
+		characterInputText = new FlxUIInputText(10, 100, 150, 'dad', 8);
+		// blockPressWhileTypingOn.push(soundInputText);
+
+		lineInputText = new FlxUIInputText(10, 135, 230, dialogueTestEditor[DialogueBox.dialogueLine] + "", 8);
+		// blockPressWhileTypingOn.push(lineInputText);
+
+		var loadButton:FlxButton = new FlxButton(20, lineInputText.y + 25, "Load Dialogue", function()
+		{
+			// loadDialog("bopeebo");
 		});
-		var saveButton:FlxButton = new FlxButton(loadButton.x + 120, loadButton.y, "Save Dialogue", function() {
-            // Create a handle to the file in text format (the false, true is binary)
-           
-			//saveDialog();
-		});
+		var saveButton:FlxButton = new FlxButton(loadButton.x + 120, loadButton.y, "Apply", function()
+		{
+			// Create a handle to the file in text format (the false, true is binary)
+			removeDialogThingy();
+			editDialogThingy();
 
-		//tab_group.add(new FlxText(10, speedStepper.y - 18, 0, 'Interval/Speed (ms):'));
-		//tab_group.add(new FlxText(10, characterInputText.y - 18, 0, 'Character:'));
-		tab_group.add(new FlxText(10, soundInputText.y - 18, 0, 'Sound file name:'));
-		tab_group.add(new FlxText(10, lineInputText.y - 18, 0, 'Text:'));
-        tab_group.add(soundInputText);
-		tab_group.add(lineInputText);
-		tab_group.add(loadButton);
-		tab_group.add(saveButton);
-		UI_box.addGroup(tab_group);
+			// saveDialog();
+		});
+		tab_group_dialog.add(new FlxText(10, boxTypeInputText.y - 18, 0, 'Dialogue Type: '));
+		tab_group_dialog.add(new FlxText(10, lineInputText.y - 18, 0, 'Text: '));
+		tab_group_dialog.add(new FlxText(10, characterInputText.y - 18, 0, 'Character:'));
+		tab_group_dialog.add(boxTypeInputText);
+		tab_group_dialog.add(characterInputText);
+		tab_group_dialog.add(lineInputText);
+		tab_group_dialog.add(loadButton);
+		tab_group_dialog.add(saveButton);
+		UI_box.addGroup(tab_group_dialog);
 	}
 
-	
-	override function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.ESCAPE)
-            {
-               
-                //DialogueBox.deleteBox();
-                FlxG.switchState(new MainMenuState());
-                
-            }
+	override function update(elapsed:Float)
+	{
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
+			// DialogueBox.deleteBox();
+			FlxG.switchState(new MainMenuState());
+		}
+		if (FlxG.keys.justPressed.ENTER)
+		{
+			lineInputText.text += "/";
+		}
+		if (FlxG.keys.justPressed.CONTROL)
+		{
+			addDialogThingy();
+		}
+		if (FlxG.keys.justPressed.ALT)
+		{
+			dialogAmount = dialogueTestEditor.length - 1;
+			if(dialogAmount > 1)
+			removeDialogThingy();
+		}
 		super.update(elapsed);
 	}
-   
 
-    //WIP SHIIIIT
-    /*function loadDialog(song:String):Void
-        {
-            var saveDifficulty:String = "";
-    
-    
-            if (sys.FileSystem.exists('assets/data/'+ song.toLowerCase() + '/songDialog.json')) {
-                _dialog = DialogueBoxShit.loadFromJson(song.toLowerCase());
-            }else{
-                _dialog = DialogueBoxShit.loadFromJson("bopeebo");
-            }
-            //lineInputText = _dialog.text + "";
-            FlxG.resetState();
-        }
-    
-        private function saveDialog()
-        {
-            var saveDifficulty:String = "";
-            var json = {
-                'dialog': _dialog.dialog,
-                'character': _dialog.character,
-                'text': _dialog.text
-    
-            };
-    
-          
-    
-            var data:String = Json.stringify(json);
-    
-            if ((data != null) && (data.length > 0))
-            {
-                _file = new FileReference();
-                _file.addEventListener(Event.COMPLETE, onSaveComplete);
-                _file.addEventListener(Event.CANCEL, onSaveCancel);
-                _file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-                
-                _file.save(data.trim(), "songDialog.json");
-            }
-        }
-    
-        function onSaveComplete(_):Void
-        {
-            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
-            _file.removeEventListener(Event.CANCEL, onSaveCancel);
-            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-            _file = null;
-            FlxG.log.notice("Successfully saved DIALOG DATA.");
-        }
-    
+	function removeDialogThingy():Void
+	{
+		dialogueTestEditor.remove(dialogueTestEditor[DialogueBox.dialogueLine]);
+		DialogueBox.dialogueLine -= 1;
+		dialogAmount = dialogueTestEditor.length - 1;
+		dialogAmountText.text = "Dialogs: " + dialogAmount;
 
-        function onSaveCancel(_):Void
-        {
-            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
-            _file.removeEventListener(Event.CANCEL, onSaveCancel);
-            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-            _file = null;
-        }
+		DialogueBox.dialogueList = dialogueTestEditor;
+		trace("removed: " + dialogueTestEditor);
+		DialogueBox.updateDialogLine = true;
 
-        function onSaveError(_):Void
-        {
-            _file.removeEventListener(Event.COMPLETE, onSaveComplete);
-            _file.removeEventListener(Event.CANCEL, onSaveCancel);
-            _file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-            _file = null;
-            FlxG.log.error("Problem saving Dialog data");
-        }*/
+		// DialogueBox.dialogueLine;
+	}
 
+	function addDialogThingy():Void
+	{
+		dialogueTestEditor.insert(dialogueTestEditor.length, ":dad:_normal_Insert text here");
+		dialogAmount = dialogueTestEditor.length - 1;
+		dialogAmountText.text = "Dialogs: " + dialogAmount;
+		// cleanDialogShit();
+		// DialogueBox.dialogueList = dialogueTestEditor;
 
+		DialogueBox.dialogStartFinished = false;
+
+		// DialogueBox.dialogueLine;
+	}
+
+	function editDialogThingy():Void
+	{
+		dialogueTestEditor.insert(dialogueTestEditor.length + 1, ":" + characterInputText.text + ":_" + boxTypeInputText.text + "_" + lineInputText.text);
+		dialogAmount = dialogueTestEditor.length - 1;
+		dialogAmountText.text = "Dialogs: " + dialogAmount;
+		// cleanDialogShit();
+		// DialogueBox.dialogueList = dialogueTestEditor;
+
+		DialogueBox.dialogStartFinished = false;
+
+		// DialogueBox.dialogueLine;
+	}
+
+	function cleanDialogShit():Void
+	{
+		var splitName:Array<String> = dialogueTestEditor[dialogueTestEditor.length].split(":");
+		DialogueBox.curDialogCharacter = splitName[1];
+		var splitDialogShit:Array<String> = dialogueTestEditor[dialogueTestEditor.length].split("_");
+		DialogueBox.curDialogStyle = splitDialogShit[1];
+		// trace("character: " + DialogueBox.curDialogCharacter);
+		dialogueTestEditor[dialogueTestEditor.length] = dialogueTestEditor[dialogueTestEditor.length].substr(splitName[1].length + 2);
+		trace("dialog shit parsed: " + dialogueTestEditor);
+		DialogueBox.dialogueList[dialogueTestEditor.length] = dialogueTestEditor[dialogueTestEditor.length];
+
+		// trace("dialog shit parsed second: " + dialogueTestEditor);
+	}
+
+	function debugTrace(debugTexty:String = ""):Void{
+		if (Main.ludumDEBUG == true)
+			trace(debugTexty + "");
+	}
 }

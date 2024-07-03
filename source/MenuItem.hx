@@ -14,19 +14,20 @@ class MenuItem extends FlxSpriteGroup
 	{
 		super(x, y);
 
-		var tex = FlxAtlasFrames.fromSparrow(AssetPaths.campaign_menu_UI_assets__png, AssetPaths.campaign_menu_UI_assets__xml);
+		//var tex = FlxAtlasFrames.fromSparrow(AssetPaths.campaign_menu_UI_assets__png, AssetPaths.campaign_menu_UI_assets__xml);
 
-		week = new FlxSprite();
-		week.frames = tex;
-		week.animation.addByPrefix('week0', "tutorial selected", 24);
+		week = new FlxSprite().loadGraphic("assets/images/storyMenu/week" + weekNum + ".png");
+		//week.frames = tex;
+		/*week.animation.addByPrefix('week0', "tutorial selected", 24);
 		week.animation.addByPrefix('week1', "WEEK1 select", 24);
 		week.animation.addByPrefix('week2', "week2 select", 24);
 		week.animation.addByPrefix('week3', "Week 3 press", 24);
-		week.animation.addByPrefix('week4', "Week 4 press", 24);
+		week.animation.addByPrefix('week4', "Week 4 press", 24);*/
+		week.color = 0xFFFFFFFF;
 		add(week);
 
-		week.animation.play('week' + weekNum);
-		week.animation.pause();
+		/*week.animation.play('week' + weekNum);
+		week.animation.pause();*/
 		week.updateHitbox();
 
 		if (!unlocked)
@@ -34,6 +35,7 @@ class MenuItem extends FlxSpriteGroup
 			week.alpha = 0.6;
 		}
 	}
+	
 
 	override function update(elapsed:Float)
 	{

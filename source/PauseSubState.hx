@@ -38,7 +38,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		menuItems = ['Resume', 'Restart Song', 'Exit to menu'];
 
-		pauseMusic = new FlxSound().loadEmbedded('assets/music/pause/breakfast' + TitleState.soundExt, true, true);
+		pauseMusic = new FlxSound().loadEmbedded('assets/shared/music/pause/breakfast' + TitleState.soundExt, true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 
@@ -107,12 +107,12 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (upP)
 		{
-			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
+			FlxG.sound.play('assets/shared/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(-1);
 		}
 		if (downP)
 		{
-			FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt);
+			FlxG.sound.play('assets/shared/sounds/scrollMenu' + TitleState.soundExt);
 			changeSelection(1);
 		}
 
@@ -142,10 +142,14 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.shitNotesNumber = 0;
 					PlayState.missedNotesNumber = 0;
 					FlxG.sound.music.stop();
-					if (PlayState.isStoryMode)
-						FlxG.switchState(new StoryMenuState());
-					else
+					if (PlayState.isStoryMode){
+						FlxG.switchState(new StoryMenuState()); 
+						FlxG.resetState();
+					}
+					else{
 						FlxG.switchState(new FreeplayState());
+						FlxG.resetState();
+					}
 			}
 		}
 

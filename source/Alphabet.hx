@@ -196,17 +196,17 @@ class Alphabet extends FlxSpriteGroup
 				if (FlxG.random.bool(40))
 				{
 					if(PlayState.talking == true){
-					switch (PlayState.SONG.player2.toLowerCase())
+					switch (DialogueBox.curDialogCharacter)
 					{
 						case 'gf':
 							var daSound:String = "GF_";
-					        FlxG.sound.play('assets/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
+					        FlxG.sound.play('assets/shared/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
 						case 'dad':
 							var daSound:String = "DAD_";
-					        FlxG.sound.play('assets/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
+					        FlxG.sound.play('assets/shared/sounds/dialogs/' + daSound + FlxG.random.int(1, 4) + TitleState.soundExt, 0.4);
 						default:
 							var daSound:String = "";
-					        FlxG.sound.play('assets/sounds/chartEditor/metronomeTick'+ TitleState.soundExt, 0.4);
+					        FlxG.sound.play('assets/shared/sounds/dialogs/pixelText' + TitleState.soundExt, 0.4);
 					}
 				}
 				}
