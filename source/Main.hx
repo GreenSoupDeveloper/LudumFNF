@@ -26,10 +26,8 @@ class Main extends Sprite
 
 		GameOptions.oldGameOverMenu = FlxG.save.data.oldGameOverMenu;
 		GameOptions.oldTitleScreen = FlxG.save.data.oldTitleScreen;
-		if(FlxG.save.data.oldTitleScreen == true){
-			addChild(new FlxGame(0, 0, OldTitleState));
-		}else{
-			addChild(new FlxGame(0, 0, TitleState));
-		}
+	
+			addChild(new FlxGame(0, 0, LoadingPrecacheState));
+		
 	}
 }

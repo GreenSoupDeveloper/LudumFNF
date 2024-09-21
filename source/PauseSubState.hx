@@ -132,6 +132,8 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.badNotesNumber = 0;
 					PlayState.shitNotesNumber = 0;
 					PlayState.missedNotesNumber = 0;
+					FlxG.sound.music.stop();
+					PlayState.vocals.stop();
 					FlxG.resetState();
 				case "Exit to menu":
 					PlayState.songPlaying = false;
@@ -142,6 +144,8 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.shitNotesNumber = 0;
 					PlayState.missedNotesNumber = 0;
 					FlxG.sound.music.stop();
+					PlayState.vocals.stop();
+
 					if (PlayState.isStoryMode){
 						FlxG.switchState(new StoryMenuState()); 
 						FlxG.resetState();

@@ -18,19 +18,21 @@ class OldGameOverState extends MusicBeatState
 	var loser:FlxSprite;
 	var gameOverMusic:FlxSound;
 	var afterThing:Bool = false;
-
+	var daStage = PlayState.curStage;
 	override function create()
 	{
-		if (PlayState.SONG.stage == 'school')
+		if(daStage == "school" || daStage == "schoolEvil")
 		{
 			gameOverMusic = new FlxSound().loadEmbedded('assets/shared/music/gameOver/gameOver-pixel' + TitleState.soundExt, true, true);
+			FlxG.sound.play('assets/shared/sounds/fnf_loss_sfx-pixel-old' + TitleState.soundExt, 0.7);
 		}
 		else
 		{
 			gameOverMusic = new FlxSound().loadEmbedded('assets/shared/music/gameOver/gameOver' + TitleState.soundExt, true, true);
+			FlxG.sound.play('assets/shared/sounds/fnf_loss_sfx-old' + TitleState.soundExt, 0.7);
 		}
 
-		FlxG.sound.play('assets/shared/sounds/fnf_loss_sfx-old' + TitleState.soundExt, 0.7);
+		
 		loser = new FlxSprite(100, 100);
 		var loseTex = FlxAtlasFrames.fromSparrow(AssetPaths.lose__png, AssetPaths.lose__xml);
 		loser.frames = loseTex;
@@ -110,9 +112,9 @@ class OldGameOverState extends MusicBeatState
 			FlxG.sound.music.stop();
 			FlxG.camera.follow(restart, LOCKON, 0.09);
 			FlxTween.tween(loser, {alpha: -1}, 1, {ease: FlxEase.quartInOut});
-			if (PlayState.SONG.stage == 'school')
+			if(daStage == "school" || daStage == "schoolEvil")
 			{
-				FlxG.sound.play('assets/shared/music/gameOver/gameOverEnd-Pixel' + TitleState.soundExt);
+				FlxG.sound.play('assets/shared/music/gameOver/gameOverEnd-pixel' + TitleState.soundExt);
 			}
 			else
 			{

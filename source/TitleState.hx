@@ -41,10 +41,11 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	var songs:Array<String> = [];
+	var songPrecache:FlxSound;
+
 	override public function create():Void
 	{
-	
-
 		#if (!web)
 		TitleState.soundExt = '.ogg';
 		#end
@@ -57,16 +58,12 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		
-
 	
 
-		
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
 		});
-	
 	}
 
 	var logoBl:FlxSprite;
@@ -225,21 +222,21 @@ class TitleState extends MusicBeatState
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro)
+		{
+			titleText.animation.play('press');
+
+			FlxG.camera.flash(FlxColor.WHITE, 1);
+			FlxG.sound.play('assets/shared/sounds/confirmMenu' + TitleState.soundExt, 0.7);
+
+			transitioning = true;
+			// FlxG.sound.music.stop();
+			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				titleText.animation.play('press');
-		
-				FlxG.camera.flash(FlxColor.WHITE, 1);
-				FlxG.sound.play('assets/shared/sounds/confirmMenu' + TitleState.soundExt, 0.7);
-	
-				transitioning = true;
-					// FlxG.sound.music.stop();
-				new FlxTimer().start(2, function(tmr:FlxTimer)
-				{
-					FlxG.switchState(new MainMenuState());
-				});
-				// FlxG.sound.play('assets/shared/music/titleShoot' + TitleState.soundExt, 0.7);
-			}
-			
+				FlxG.switchState(new MainMenuState());
+			});
+			// FlxG.sound.play('assets/shared/music/titleShoot' + TitleState.soundExt, 0.7);
+		}
+
 		if (pressedEnter && !skippedIntro)
 		{
 			skipIntro();

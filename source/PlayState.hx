@@ -52,7 +52,7 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
-	private var vocals:FlxSound;
+	public static var vocals:FlxSound;
 
 	private var dad:Character;
 	private var gf:Character;
@@ -435,47 +435,47 @@ class PlayState extends MusicBeatState
 			add(bg);
 
 			/* 
-								var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic('assets/images/weeb/evilSchoolBG.png');
-								bg.scale.set(6, 6);
-								// bg.setGraphicSize(Std.int(bg.width * 6));
-								// bg.updateHitbox();
-								add(bg);
+				var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic('assets/images/weeb/evilSchoolBG.png');
+				bg.scale.set(6, 6);
+				// bg.setGraphicSize(Std.int(bg.width * 6));
+				// bg.updateHitbox();
+				add(bg);
 
-								var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic('assets/images/weeb/evilSchoolFG.png');
-								fg.scale.set(6, 6);
-								// fg.setGraphicSize(Std.int(fg.width * 6));
-								// fg.updateHitbox();
-								add(fg);
+				var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic('assets/images/weeb/evilSchoolFG.png');
+				fg.scale.set(6, 6);
+				// fg.setGraphicSize(Std.int(fg.width * 6));
+				// fg.updateHitbox();
+				add(fg);
 
-								wiggleShit.effectType = WiggleEffectType.DREAMY;
-								wiggleShit.waveAmplitude = 0.01;
-								wiggleShit.waveFrequency = 60;
-								wiggleShit.waveSpeed = 0.8;
+				wiggleShit.effectType = WiggleEffectType.DREAMY;
+				wiggleShit.waveAmplitude = 0.01;
+				wiggleShit.waveFrequency = 60;
+				wiggleShit.waveSpeed = 0.8;
 			 */
 
 			// bg.shader = wiggleShit.shader;
 			// fg.shader = wiggleShit.shader;
 
 			/* 
-								var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-								var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
+				var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
+				var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
 
-								// Using scale since setGraphicSize() doesnt work???
-								waveSprite.scale.set(6, 6);
-								waveSpriteFG.scale.set(6, 6);
-								waveSprite.setPosition(posX, posY);
-								waveSpriteFG.setPosition(posX, posY);
+				// Using scale since setGraphicSize() doesnt work???
+				waveSprite.scale.set(6, 6);
+				waveSpriteFG.scale.set(6, 6);
+				waveSprite.setPosition(posX, posY);
+				waveSpriteFG.setPosition(posX, posY);
 
-								waveSprite.scrollFactor.set(0.7, 0.8);
-								waveSpriteFG.scrollFactor.set(0.9, 0.8);
+				waveSprite.scrollFactor.set(0.7, 0.8);
+				waveSpriteFG.scrollFactor.set(0.9, 0.8);
 
-								// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-								// waveSprite.updateHitbox();
-								// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-								// waveSpriteFG.updateHitbox();
+				// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
+				// waveSprite.updateHitbox();
+				// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
+				// waveSpriteFG.updateHitbox();
 
-								add(waveSprite);
-								add(waveSpriteFG);
+				add(waveSprite);
+				add(waveSpriteFG);
 			 */
 		}
 		else
@@ -1175,7 +1175,7 @@ class PlayState extends MusicBeatState
 
 			vocals.stop();
 			FlxG.sound.music.stop();
-			
+
 			// 1 / 500 (ig) chance for Gitaroo Man easter egg
 			if (FlxG.random.bool(0.2))
 			{
@@ -1184,14 +1184,20 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				if(GameOptions.oldGameOverMenu == true){
-					FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+				if (GameOptions.oldGameOverMenu == true)
+				{
+					if(curStage == "school" || curStage == "schoolEvil"){
+						FlxG.sound.play('assets/shared/sounds/bfDie-pixel' + TitleState.soundExt, 0.7);
+					}else{
+						FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+					}				
 					FlxG.switchState(new OldGameOverState());
-				}else{
-					FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+				}
+				else
+				{
+					
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
-
 			}
 		}
 		scoreTxt.text = "Score:" + finalScore;
@@ -1334,11 +1340,18 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				if(GameOptions.oldGameOverMenu == true){
-					FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+				if (GameOptions.oldGameOverMenu == true)
+				{
+					if(curStage == "school" || curStage == "schoolEvil"){
+						FlxG.sound.play('assets/shared/sounds/bfDie-pixel' + TitleState.soundExt, 0.7);
+					}else{
+						FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+					}			
 					FlxG.switchState(new OldGameOverState());
-				}else{
-					FlxG.sound.play('assets/shared/sounds/bfDie' + TitleState.soundExt, 0.7);
+				}
+				else
+				{
+					
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
 			}
@@ -1384,7 +1397,7 @@ class PlayState extends MusicBeatState
 							altAnim = '-alt';
 					}
 
-					trace("DA ALT THO?: " + SONG.notes[Math.floor(curStep / 16)].altAnim);
+					//trace("DA ALT THO?: " + SONG.notes[Math.floor(curStep / 16)].altAnim);
 
 					switch (Math.abs(daNote.noteData))
 					{
@@ -1439,7 +1452,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.stop();
 		vocals.stop();
 
-		trace('SONG DONE' + isStoryMode);
+		trace('SONG DONE ' + isStoryMode);
 
 		#if !switch
 		#end
@@ -1835,7 +1848,7 @@ class PlayState extends MusicBeatState
 
 	function noteCheck(keyP:Bool, note:Note):Void
 	{
-		trace(note.noteData + ' note check here ' + keyP);
+		//trace(note.noteData + ' note check here ' + keyP);
 		if (keyP)
 			goodNoteHit(note);
 		else
@@ -1854,10 +1867,13 @@ class PlayState extends MusicBeatState
 				finalScore += currentScoreNextValue;
 			}
 
-			if (note.noteData >= 0)
-				health += 0.060;
-			else
-				health += 0.06;
+			if (health < 2)
+			{
+				if (note.noteData >= 0)
+					health += 0.060;
+				else
+					health += 0.06;
+			}
 
 			switch (note.noteData)
 			{

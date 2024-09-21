@@ -29,7 +29,7 @@ typedef SwagSong =
 class Song
 {
 	public var song:String;
-	public var notes:Array<SwagSection>;
+	public var notes:Array<SwagSection> = [];
 	public var bpm:Int;
 	public var sections:Int;
 	public var sectionLengths:Array<Dynamic> = [];
