@@ -62,7 +62,7 @@ class MainMenuState extends MusicBeatState
 		{
 			var offset:Float = 100 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			trace("assets/images/mainMenu/menu_" + optionShit[i] + ".png");
+			//trace("assets/images/mainMenu/menu_" + optionShit[i] + ".png");
 			menuItem.frames = FlxAtlasFrames.fromSparrow("assets/images/mainMenu/menu_" + optionShit[i] + ".png",
 				"assets/images/mainMenu/menu_" + optionShit[i] + ".xml");
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
@@ -137,7 +137,7 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
-					enteredOtherState = true;
+					
 					FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 				}
 				else

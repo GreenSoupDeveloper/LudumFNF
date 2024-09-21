@@ -41,8 +41,7 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
-	var songs:Array<String> = [];
-	var songPrecache:FlxSound;
+
 
 	override public function create():Void
 	{
@@ -58,7 +57,9 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-	
+		// optimisation stuff
+
+		
 
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{

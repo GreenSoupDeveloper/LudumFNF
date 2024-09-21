@@ -11,12 +11,11 @@ class Main extends Sprite
 {
 	public static var ludumfnfVersion:String = "0.1.2";
 	public static var ludumDEBUG:Bool = true;
-	
+
 	public function new()
 	{
-		//SkipSplash = true;
+		// SkipSplash = true;
 		super();
-		
 
 		#if !mobile
 		addChild(new FPS(10, 3, 0xFFFFFF));
@@ -26,8 +25,7 @@ class Main extends Sprite
 
 		GameOptions.oldGameOverMenu = FlxG.save.data.oldGameOverMenu;
 		GameOptions.oldTitleScreen = FlxG.save.data.oldTitleScreen;
-	
-			addChild(new FlxGame(0, 0, LoadingPrecacheState));
-		
+
+		addChild(new FlxGame(0, 0, LoadingPrecacheState));
 	}
 }

@@ -26,7 +26,7 @@ import openfl.Assets;
 
 using StringTools;
 
-class LoadingPrecacheState extends FlxState
+class LoadingPrecacheState extends MusicBeatState
 {
 	var songs:Array<String> = [];
 	var songPrecache:FlxSound;
@@ -34,14 +34,23 @@ class LoadingPrecacheState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		songs = CoolUtil.coolTextFile('assets/data/freeplaySonglist.txt');
+		// songs = CoolUtil.coolTextFile('assets/data/freeplaySonglist.txt');
 
-		for (i in 0...songs.length)
+		var text = new flixel.text.FlxText(0, 0, 0, "Loading..", 42);
+		text.screenCenter();
+		add(text);
+
+		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
-			songPrecache = new FlxSound().loadEmbedded('assets/songs/' + songs[i].toLowerCase() + "/Inst" + TitleState.soundExt, true, true);
-			songPrecache.stop();
-		}
-		shitDone();
+			songs = CoolUtil.coolTextFile('assets/data/freeplaySonglist.txt');
+
+			for (i in 0...songs.length)
+			{
+				songPrecache = new FlxSound().loadEmbedded('assets/songs/' + songs[i].toLowerCase() + "/Inst" + TitleState.soundExt, true, true);
+				songPrecache.stop();
+			}
+			shitDone();
+		});
 	}
 
 	function shitDone():Void
