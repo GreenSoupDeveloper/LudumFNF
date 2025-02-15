@@ -9,7 +9,7 @@ import flixel.FlxSubState;
 
 class Main extends Sprite
 {
-	public static var ludumfnfVersion:String = "0.1.2";
+	public static var ludumfnfVersion:String = "0.1.3";
 	public static var ludumDEBUG:Bool = true;
 
 	public function new()
@@ -25,6 +25,7 @@ class Main extends Sprite
 
 		GameOptions.oldGameOverMenu = FlxG.save.data.oldGameOverMenu;
 		GameOptions.oldTitleScreen = FlxG.save.data.oldTitleScreen;
+		GameOptions.botMode = FlxG.save.data.botMode;
 
 		addChild(new FlxGame(0, 0, LoadingPrecacheState));
 	}

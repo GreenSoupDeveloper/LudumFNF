@@ -9,7 +9,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 using StringTools;
 
 class FreeplayState extends MusicBeatState
@@ -180,6 +180,7 @@ class FreeplayState extends MusicBeatState
 			/*if(songs[curSelected].toLowerCase() == "monster"){
 			PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase(), songs[curSelected].toLowerCase());
 			}else{*/
+				PlayState.SONG = null;
 				PlayState.SONG = Song.loadFromJson(songs[curSelected].toLowerCase() + difficFreeplay, songs[curSelected].toLowerCase());
 			//}
 			PlayState.isStoryMode = false;

@@ -11,4 +11,5 @@ class GameOptions
 {
 	public static var oldGameOverMenu:Bool = false;
     public static var oldTitleScreen:Bool = false;
+    public static var botMode:Bool = false;
 }

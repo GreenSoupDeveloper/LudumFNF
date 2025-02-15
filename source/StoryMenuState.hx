@@ -26,7 +26,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -303,7 +303,7 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		PlayState.storyDifficulty = curDifficulty;
-
+		PlayState.SONG = null;
 		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 		// FlxG.save.data.currentDifficulty = curDifficulty;
 		// FlxG.save.flush();

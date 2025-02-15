@@ -30,7 +30,8 @@ class OptionsMenuState extends MusicBeatState
 		}
 		optionsStrings = [
 			'Old Game Over Screen = ' + GameOptions.oldGameOverMenu,
-			'Old Title Screen = ' + GameOptions.oldTitleScreen
+			'Old Title Screen = ' + GameOptions.oldTitleScreen,
+			'Bot Mode = ' + GameOptions.botMode
 		];
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuDesat.png');
 		menuBG.color = 0xFFea71fd;
@@ -99,6 +100,19 @@ class OptionsMenuState extends MusicBeatState
 					{
 						GameOptions.oldTitleScreen = false;
 						FlxG.save.data.oldTitleScreen = GameOptions.oldTitleScreen;
+						FlxG.save.flush();
+					}
+					case 2:
+					if (GameOptions.botMode == false)
+					{
+						GameOptions.botMode = true;
+						FlxG.save.data.botMode = GameOptions.botMode;
+						FlxG.save.flush();
+					}
+					else
+					{
+						GameOptions.botMode = false;
+						FlxG.save.data.botMode = GameOptions.botMode;
 						FlxG.save.flush();
 					}
 			}

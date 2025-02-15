@@ -10,7 +10,7 @@ import flixel.tweens.FlxTween;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 
 class OldGameOverState extends MusicBeatState
 {
