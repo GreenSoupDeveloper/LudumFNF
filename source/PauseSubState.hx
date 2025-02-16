@@ -10,6 +10,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
+import flixel.FlxCamera;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -38,6 +39,8 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		menuItems = ['Resume', 'Restart Song', 'Exit to menu'];
 
+		
+		
 		pauseMusic = new FlxSound().loadEmbedded('assets/shared/music/pause/breakfast' + TitleState.soundExt, true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
@@ -56,13 +59,16 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
 			songText.isMenuItem = true;
+			songText.scrollFactor.set();
 			songText.targetY = i;
 			grpMenuShit.add(songText);
 		}
 
 		changeSelection();
+		
+		
 
-		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+		
 
 		
 
@@ -138,6 +144,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Exit to menu":
 					PlayState.songPlaying = false;
 					PlayState.finalScore = 0;
+					PlayState.SONG = null;
 					PlayState.sickNotesNumber = 0;
 					PlayState.goodNotesNumber = 0;
 					PlayState.badNotesNumber = 0;
@@ -147,12 +154,14 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.vocals.stop();
 
 					if (PlayState.isStoryMode){
+						
 						FlxG.switchState(new StoryMenuState()); 
-						FlxG.resetState();
+						
 					}
 					else{
+						
 						FlxG.switchState(new FreeplayState());
-						FlxG.resetState();
+						
 					}
 			}
 		}

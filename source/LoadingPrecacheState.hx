@@ -44,7 +44,7 @@ class LoadingPrecacheState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().loadGraphic('assets/images/ludumlogo.png');
 		bg.antialiasing = true;
 		bg.scale.set(0.8, 0.8);
-		bg.y += 110;
+		bg.y += 120;
 		bg.x = (FlxG.width - bg.width) / 2;
 		add(bg);
 		new FlxTimer().start(0.1, function(tmr:FlxTimer)
@@ -53,8 +53,12 @@ class LoadingPrecacheState extends MusicBeatState
 
 			for (i in 0...songs.length)
 			{
-				songPrecache = new FlxSound().loadEmbedded('assets/songs/' + songs[i].toLowerCase() + "/Inst" + TitleState.soundExt, true, true);
-				songPrecache.stop();
+				text.text = "Precachin' Assets... (" + (i + 1) + "/" + songs.length + ")";
+				
+					songPrecache = new FlxSound().loadEmbedded('assets/songs/' + songs[i].toLowerCase() + "/Inst" + TitleState.soundExt, true, true);
+					songPrecache.stop();
+					
+				
 			}
 			/*for (i in 0...songPrecache.length)
 				{
